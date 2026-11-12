@@ -1,4 +1,3 @@
-// AQUÍ ESTÁ TU NUEVA URL DE LA VERSIÓN 7
 const API_URL = "https://script.google.com/macros/s/AKfycbw13XHijvij69hcrHdBA2oJ800nqMr3dJNzSDHSxPiE0xfHH72sVTO4mS3XNTRqMlQ/exec";
 
 const state = {
@@ -28,10 +27,17 @@ async function postJSON(body) {
 }
 
 async function loadProducts() {
+  // MOSTRAR SKELETONS MIENTRAS CARGA
+  const grid = $("#productsGrid");
+  grid.innerHTML = Array(8).fill('<div class="skeleton-card"></div>').join('');
+  
   try {
     state.products = await getJSON(`${API_URL}?action=getProducts`);
     buildFilterOptions(); renderProducts(); updateCartCount(); updateProductStructuredData(state.products);
-  } catch (err) { $("#resultsCount").textContent = "Error al cargar productos"; }
+  } catch (err) { 
+    $("#resultsCount").textContent = "Error al cargar productos"; 
+    grid.innerHTML = '';
+  }
 }
 
 function buildFilterOptions() {
@@ -65,7 +71,13 @@ function renderProducts() {
   $("#resultsCount").textContent = `${list.length} producto(s) encontrados`;
   $("#emptyMessage").classList.toggle("hidden", list.length > 0);
   grid.innerHTML = "";
-  list.forEach((p) => grid.appendChild(createProductCard(p)));
+  
+  // RENDERIZAR CON ANIMACIÓN EN CADENA (Uno por uno)
+  list.forEach((p, index) => {
+    const card = createProductCard(p);
+    card.style.animationDelay = `${index * 50}ms`; // Retraso progresivo
+    grid.appendChild(card);
+  });
 }
 
 function createProductCard(product) {

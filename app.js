@@ -1,4 +1,5 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbweIOoPaQEcS6mSxMe1N575-timimyPx-z7XLvX3DGlugYIdRjhYAXbFtPTuUQsBSw/exec";
+// AQUÍ ESTÁ TU NUEVA URL DE LA VERSIÓN 7
+const API_URL = "https://script.google.com/macros/s/AKfycbw13XHijvij69hcrHdBA2oJ800nqMr3dJNzSDHSxPiE0xfHH72sVTO4mS3XNTRqMlQ/exec";
 
 const state = {
   products: [],
@@ -10,56 +11,38 @@ const $ = (sel) => document.querySelector(sel);
 const formatCOP = (n) => new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(n);
 
 function toast(msg, ms = 2500) {
-  const el = document.createElement("div");
-  el.className = "toast";
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), ms);
+  const el = document.createElement("div"); el.className = "toast"; el.textContent = msg;
+  document.body.appendChild(el); setTimeout(() => el.remove(), ms);
 }
 
 async function getJSON(url) {
-  const res = await fetch(url);
-  const json = await res.json();
-  if (!json.success) throw new Error(json.error);
-  return json.data;
+  const res = await fetch(url); const json = await res.json();
+  if (!json.success) throw new Error(json.error); return json.data;
 }
 
 async function postJSON(body) {
   const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(body),
+    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body),
   });
-  const json = await res.json();
-  if (!json.success) throw new Error(json.error);
-  return json.data;
+  const json = await res.json(); if (!json.success) throw new Error(json.error); return json.data;
 }
 
 async function loadProducts() {
   try {
-    const products = await getJSON(`${API_URL}?action=getProducts`);
-    state.products = products;
-    buildFilterOptions();
-    renderProducts();
-    updateCartCount();
-    updateProductStructuredData(products);
-  } catch (err) {
-    $("#resultsCount").textContent = "Error al cargar productos";
-  }
+    state.products = await getJSON(`${API_URL}?action=getProducts`);
+    buildFilterOptions(); renderProducts(); updateCartCount(); updateProductStructuredData(state.products);
+  } catch (err) { $("#resultsCount").textContent = "Error al cargar productos"; }
 }
 
 function buildFilterOptions() {
   const equipos = [...new Set(state.products.map((p) => p.equipo))].sort();
   const tipos = [...new Set(state.products.map((p) => p.tipo))].sort();
   const generos = [...new Set(state.products.map((p) => p.genero))].sort();
-
   const fill = (select, values, label) => {
     select.innerHTML = `<option value="">${label}</option>`;
     values.forEach((v) => { select.innerHTML += `<option value="${v}">${v}</option>`; });
   };
-  fill($("#equipoFilter"), equipos, "Equipos");
-  fill($("#tipoFilter"), tipos, "Tipos");
-  fill($("#generoFilter"), generos, "Géneros");
+  fill($("#equipoFilter"), equipos, "Equipos"); fill($("#tipoFilter"), tipos, "Tipos"); fill($("#generoFilter"), generos, "Géneros");
 }
 
 function applyFilters() {
@@ -78,8 +61,7 @@ function applyFilters() {
 }
 
 function renderProducts() {
-  const grid = $("#productsGrid");
-  const list = applyFilters();
+  const grid = $("#productsGrid"); const list = applyFilters();
   $("#resultsCount").textContent = `${list.length} producto(s) encontrados`;
   $("#emptyMessage").classList.toggle("hidden", list.length > 0);
   grid.innerHTML = "";
@@ -87,10 +69,8 @@ function renderProducts() {
 }
 
 function createProductCard(product) {
-  const card = document.createElement("article");
-  card.className = "product-card";
-  const sinStock = product.stock <= 0;
-  const tallaInicial = product.tallas[0] || "";
+  const card = document.createElement("article"); card.className = "product-card";
+  const sinStock = product.stock <= 0; const tallaInicial = product.tallas[0] || "";
 
   card.innerHTML = `
     <div class="product-image-wrap">
@@ -107,36 +87,28 @@ function createProductCard(product) {
     </div>
   `;
 
-  const tallasWrap = card.querySelector(".tallas");
-  let tallaSeleccionada = tallaInicial;
+  const tallasWrap = card.querySelector(".tallas"); let tallaSeleccionada = tallaInicial;
   product.tallas.forEach((t) => {
-    const btn = document.createElement("button");
-    btn.className = "talla-btn" + (t === tallaInicial ? " selected" : "");
+    const btn = document.createElement("button"); btn.className = "talla-btn" + (t === tallaInicial ? " selected" : "");
     btn.textContent = t;
     btn.addEventListener("click", () => {
-      tallaSeleccionada = t;
-      tallasWrap.querySelectorAll(".talla-btn").forEach((b) => b.classList.remove("selected"));
-      btn.classList.add("selected");
+      tallaSeleccionada = t; tallasWrap.querySelectorAll(".talla-btn").forEach((b) => b.classList.remove("selected")); btn.classList.add("selected");
     });
     tallasWrap.appendChild(btn);
   });
 
-  if (!sinStock) {
-    card.querySelector(".add-btn").addEventListener("click", () => addToCart(product, tallaSeleccionada));
-  }
+  if (!sinStock) card.querySelector(".add-btn").addEventListener("click", () => addToCart(product, tallaSeleccionada));
   return card;
 }
 
 function addToCart(product, talla, cantidad = 1) {
   const idx = state.cart.findIndex((i) => i.product.id === product.id && i.talla === talla);
-  if (idx >= 0) state.cart[idx].cantidad += cantidad;
-  else state.cart.push({ product, talla, cantidad });
+  if (idx >= 0) state.cart[idx].cantidad += cantidad; else state.cart.push({ product, talla, cantidad });
   updateCartCount(); renderCart(); openCart(); toast("Agregado 🛒");
 }
 
 function removeFromCart(id, talla) {
-  state.cart = state.cart.filter((i) => !(i.product.id === id && i.talla === talla));
-  updateCartCount(); renderCart();
+  state.cart = state.cart.filter((i) => !(i.product.id === id && i.talla === talla)); updateCartCount(); renderCart();
 }
 
 function updateQty(id, talla, cantidad) {
@@ -149,33 +121,25 @@ function getCartTotal() { return state.cart.reduce((acc, i) => acc + i.product.p
 function getCartCount() { return state.cart.reduce((acc, i) => acc + i.cantidad, 0); }
 
 function updateCartCount() {
-  const count = getCartCount();
-  $("#cartCount").textContent = count;
-  $("#cartCount").classList.toggle("hidden", count === 0);
+  const count = getCartCount(); $("#cartCount").textContent = count; $("#cartCount").classList.toggle("hidden", count === 0);
 }
 
 function renderCart() {
-  const wrap = $("#cartItems");
-  wrap.innerHTML = "";
+  const wrap = $("#cartItems"); wrap.innerHTML = "";
   if (state.cart.length === 0) {
     wrap.innerHTML = '<p class="cart-empty">Tu carrito está vacío.</p>';
-    $("#cartTotal").textContent = "$0";
-    $("#goCheckout").disabled = true;
-    return;
+    $("#cartTotal").textContent = "$0"; $("#goCheckout").disabled = true; return;
   }
   state.cart.forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "cart-item";
+    const div = document.createElement("div"); div.className = "cart-item";
     div.innerHTML = `
       <img src="${item.product.imagen}" alt="${item.product.nombre}" />
       <div class="cart-item-info">
         <p class="cart-item-name">${item.product.nombre}</p>
         <p class="cart-item-meta">Talla ${item.talla} · ${formatCOP(item.product.precio)}</p>
         <div class="cart-item-controls">
-          <button class="qty-btn" data-action="minus">−</button>
-          <span class="qty-value">${item.cantidad}</span>
-          <button class="qty-btn" data-action="plus">+</button>
-          <button class="remove-btn" data-action="remove">Quitar</button>
+          <button class="qty-btn" data-action="minus">−</button><span class="qty-value">${item.cantidad}</span>
+          <button class="qty-btn" data-action="plus">+</button><button class="remove-btn" data-action="remove">Quitar</button>
         </div>
       </div>
     `;
@@ -184,8 +148,7 @@ function renderCart() {
     div.querySelector('[data-action="remove"]').addEventListener("click", () => removeFromCart(item.product.id, item.talla));
     wrap.appendChild(div);
   });
-  $("#cartTotal").textContent = formatCOP(getCartTotal());
-  $("#goCheckout").disabled = false;
+  $("#cartTotal").textContent = formatCOP(getCartTotal()); $("#goCheckout").disabled = false;
 }
 
 function openCart() { $("#cartOverlay").classList.remove("hidden"); $("#cartDrawer").classList.remove("hidden"); }
@@ -196,19 +159,14 @@ function showSuccessView() { $("#cartView").classList.add("hidden"); $("#checkou
 
 async function submitOrder(e) {
   e.preventDefault();
-  const errorEl = $("#checkoutError");
-  errorEl.classList.add("hidden");
+  const errorEl = $("#checkoutError"); errorEl.classList.add("hidden");
 
-  const cliente = $("#cliente").value.trim();
-  const email = $("#email").value.trim();
-  const telefono = $("#telefono").value.trim();
-  const direccion = $("#direccion").value.trim();
+  const cliente = $("#cliente").value.trim(); const email = $("#email").value.trim();
+  const telefono = $("#telefono").value.trim(); const direccion = $("#direccion").value.trim();
   const ciudad = $("#ciudad").value.trim();
 
   if (!cliente || !telefono || !direccion) {
-    errorEl.textContent = "Completa nombre, teléfono y dirección.";
-    errorEl.classList.remove("hidden");
-    return;
+    errorEl.textContent = "Completa nombre, teléfono y dirección."; errorEl.classList.remove("hidden"); return;
   }
 
   const order = {
@@ -217,48 +175,33 @@ async function submitOrder(e) {
     total: getCartTotal(),
   };
 
-  const btn = $("#submitOrder");
-  btn.disabled = true; btn.textContent = "Enviando...";
+  const btn = $("#submitOrder"); btn.disabled = true; btn.textContent = "Enviando...";
 
   try {
     await postJSON({ action: "addOrder", order });
     try { await postJSON({ action: "updateStock", items: state.cart.map((i) => ({ id: i.product.id, cantidad: i.cantidad })) }); } catch (err) {}
 
-    // ==========================================
-    // GENERAR EL MENSAJE DE WHATSAPP
-    // ==========================================
-    const cleanPhone = telefono.replace(/\D/g, ''); // Quitar espacios o guiones
-    const phoneWA = cleanPhone.length === 10 ? '57' + cleanPhone : cleanPhone; // Añadir código de Colombia si son 10 dígitos
-    
+    const cleanPhone = telefono.replace(/\D/g, ''); 
+    const phoneWA = cleanPhone.length === 10 ? '57' + cleanPhone : cleanPhone; 
     let textWA = `¡Hola ${cliente}! Aquí está el recibo de tu pedido en *Pasión Deportiva*:\n\n`;
-    state.cart.forEach(i => {
-      textWA += `👕 ${i.cantidad}x ${i.product.nombre} (Talla: ${i.talla})\n`;
-    });
-    textWA += `\n*Total:* ${formatCOP(order.total)}\n`;
-    textWA += `*Dirección:* ${direccion}, ${ciudad}\n\n`;
-    textWA += `¡Gracias por tu compra! ⚽`;
+    state.cart.forEach(i => { textWA += `👕 ${i.cantidad}x ${i.product.nombre} (Talla: ${i.talla})\n`; });
+    textWA += `\n*Total:* ${formatCOP(order.total)}\n*Dirección:* ${direccion}, ${ciudad}\n\n¡Gracias por tu compra! ⚽`;
 
-    const encodedText = encodeURIComponent(textWA);
-    $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodedText}`;
+    $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
 
-    state.cart = [];
-    updateCartCount(); renderCart(); showSuccessView();
+    state.cart = []; updateCartCount(); renderCart(); showSuccessView();
     setTimeout(() => loadProducts(), 1500);
   } catch (err) {
-    errorEl.textContent = err.message || "Error al enviar el pedido.";
-    errorEl.classList.remove("hidden");
+    errorEl.textContent = err.message || "Error al enviar."; errorEl.classList.remove("hidden");
   } finally {
     btn.disabled = false; btn.textContent = "Confirmar pedido";
   }
 }
 
 function bindEvents() {
-  $("#cartBtn").addEventListener("click", openCart);
-  $("#closeCart").addEventListener("click", closeCart);
-  $("#cartOverlay").addEventListener("click", closeCart);
-  $("#goCheckout").addEventListener("click", showCheckoutView);
-  $("#backToCart").addEventListener("click", showCartView);
-  $("#continueShopping").addEventListener("click", closeCart);
+  $("#cartBtn").addEventListener("click", openCart); $("#closeCart").addEventListener("click", closeCart);
+  $("#cartOverlay").addEventListener("click", closeCart); $("#goCheckout").addEventListener("click", showCheckoutView);
+  $("#backToCart").addEventListener("click", showCartView); $("#continueShopping").addEventListener("click", closeCart);
   $("#checkoutView").addEventListener("submit", submitOrder);
 
   $("#searchInput").addEventListener("input", (e) => { state.filters.search = e.target.value; renderProducts(); });
@@ -267,6 +210,7 @@ function bindEvents() {
   $("#generoFilter").addEventListener("change", (e) => { state.filters.genero = e.target.value; renderProducts(); });
   $("#ordenFilter").addEventListener("change", (e) => { state.filters.orden = e.target.value; renderProducts(); });
   $("#destacadosFilter").addEventListener("change", (e) => { state.filters.soloDestacados = e.target.checked; renderProducts(); });
+  
   $("#clearFilters").addEventListener("click", () => {
     state.filters = { equipo: "", tipo: "", genero: "", search: "", soloDestacados: false, orden: "none" };
     $("#searchInput").value = ""; $("#equipoFilter").value = ""; $("#tipoFilter").value = ""; $("#generoFilter").value = ""; $("#ordenFilter").value = "none"; $("#destacadosFilter").checked = false;
@@ -275,28 +219,20 @@ function bindEvents() {
 }
 
 function updateProductStructuredData(products) {
-  const id = "product-list-jsonld";
-  let script = document.getElementById(id);
+  const id = "product-list-jsonld"; let script = document.getElementById(id);
   if (!script) {
-    script = document.createElement("script");
-    script.id = id; script.type = "application/ld+json"; document.head.appendChild(script);
+    script = document.createElement("script"); script.id = id; script.type = "application/ld+json"; document.head.appendChild(script);
   }
   const data = {
     "@context": "https://schema.org", "@type": "ItemList",
     "itemListElement": products.map((p, i) => ({
       "@type": "ListItem", "position": i + 1,
-      "item": {
-        "@type": "Product", "name": p.nombre, "image": p.imagen,
-        "offers": { "@type": "Offer", "priceCurrency": "COP", "price": p.precio, "availability": p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock" }
-      }
+      "item": { "@type": "Product", "name": p.nombre, "image": p.imagen, "offers": { "@type": "Offer", "priceCurrency": "COP", "price": p.precio, "availability": p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock" } }
     }))
   };
   script.textContent = JSON.stringify(data);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  bindEvents();
-  renderCart();
-  loadProducts();
-  $("#footerYear").textContent = new Date().getFullYear();
+  bindEvents(); renderCart(); loadProducts(); $("#footerYear").textContent = new Date().getFullYear();
 });

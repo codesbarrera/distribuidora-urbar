@@ -91,7 +91,7 @@
     <form id="checkoutView" class="checkout-view hidden">
       <div class="checkout-fields">
         <input type="text" id="cliente" placeholder="Nombre completo *" class="input" required />
-        <input type="email" id="email" placeholder="Email" class="input" />
+        <input type="email" id="email" placeholder="Email (para enviar recibo)" class="input" />
         <input type="tel" id="telefono" placeholder="Teléfono / WhatsApp *" class="input" required />
         <input type="text" id="direccion" placeholder="Dirección *" class="input" required />
         <input type="text" id="ciudad" placeholder="Ciudad" class="input" />
@@ -104,10 +104,9 @@
       </footer>
     </form>
 
-    <!-- VISTA DE ÉXITO CON BOTÓN DE WHATSAPP -->
     <div id="successView" class="success-view hidden">
       <div class="success-icon">✅</div>
-      <p>Tu pedido fue registrado. Te enviamos un correo con los detalles.</p>
+      <p>Tu pedido fue registrado. Si ingresaste tu correo, te llegará un recibo en unos segundos.</p>
       
       <a id="whatsappReceiptBtn" href="#" target="_blank" class="btn-success" style="text-align: center; text-decoration: none; display: block; margin-bottom: 10px; background-color: #25D366;">
         📲 Recibir recibo por WhatsApp

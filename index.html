@@ -29,10 +29,10 @@
   <meta property="og:site_name" content="Tienda de Camisetas" />
   <meta property="og:title" content="Camisetas Retro y Nuevas de Fútbol | América, Nacional, Millonarios" />
   <meta property="og:description" content="Camisetas retro, buzos y sudaderas de los equipos colombianos. Calidad AAA y envíos a todo el país." />
-  <meta property="og:image" content="https://i.postimg.cc/Cx9Xn01L/Whats-App-Image-2026-10-30-at-10-43-16.jpg" />
-  <meta property="og:image:alt" content="Camiseta retro del América de Cali" />
+  <meta property="og:image" content="https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png" />
+  <meta property="og:image:alt" content="Banner Pasión Deportiva" />
   <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://codesbarrena.github.io/distribuidora-urbar/" />
   <meta property="og:locale" content="es_CO" />
 
@@ -40,7 +40,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Camisetas Retro y Nuevas de Fútbol Colombiano" />
   <meta name="twitter:description" content="América, Nacional, Millonarios. Calidad AAA, envíos a todo Colombia." />
-  <meta name="twitter:image" content="https://i.postimg.cc/Cx9Xn01L/Whats-App-Image-2026-10-30-at-10-43-16.jpg" />
+  <meta name="twitter:image" content="https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png" />
 
   <!-- ==================== TEMA / FAVICON ==================== -->
   <meta name="theme-color" content="#111827" />
@@ -62,7 +62,7 @@
     "name": "Tienda de Camisetas",
     "description": "Camisetas retro, buzos y sudaderas de los principales equipos de fútbol colombiano.",
     "url": "https://codesbarrena.github.io/distribuidora-urbar/",
-    "image": "https://i.postimg.cc/Cx9Xn01L/Whats-App-Image-2026-10-30-at-10-43-16.jpg",
+    "image": "https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png",
     "priceRange": "$$",
     "areaServed": {
       "@type": "Country",
@@ -79,17 +79,24 @@
   <!-- Skip link para accesibilidad y SEO -->
   <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
-  <!-- ==================== HEADER ==================== -->
+  <!-- ==================== HEADER (CON BANNER) ==================== -->
   <header class="header" role="banner">
-    <div class="header-inner">
-      <div class="brand">
-        <h1>Camisetas de Fútbol Colombianas</h1>
-        <p class="tagline">Retro y nuevas · Calidad AAA · Envíos a todo el país</p>
+    <div class="header-banner" style="background-image: url('https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png');">
+      <div class="header-inner">
+        
+        <!-- Título oculto para los usuarios, pero visible para Google (SEO) -->
+        <div class="brand sr-only">
+          <h1>Camisetas de Fútbol Colombianas</h1>
+          <p class="tagline">Retro y nuevas · Calidad AAA · Envíos a todo el país</p>
+        </div>
+        
+        <!-- Botón del carrito -->
+        <button id="cartBtn" class="cart-btn" aria-label="Abrir carrito de compras">
+          🛒 Carrito
+          <span id="cartCount" class="cart-count hidden" aria-live="polite">0</span>
+        </button>
+
       </div>
-      <button id="cartBtn" class="cart-btn" aria-label="Abrir carrito de compras">
-        🛒 Carrito
-        <span id="cartCount" class="cart-count hidden" aria-live="polite">0</span>
-      </button>
     </div>
   </header>
 

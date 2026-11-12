@@ -28,10 +28,24 @@ button {
   display: none !important;
 }
 
-/* ========== HEADER ========== */
+/* ========== HEADER CON BANNER ========== */
 .header {
-  background: #111827;
-  color: #fff;
+  width: 100%;
+}
+
+.header-banner {
+  width: 100%;
+  min-height: 250px; /* Altura del banner en PC */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .header-banner {
+    min-height: 180px; /* Altura del banner en celular */
+  }
 }
 
 .header-inner {
@@ -40,7 +54,15 @@ button {
   padding: 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end; /* Empuja el botón del carrito a la derecha */
+  height: 100%;
+  min-height: 250px;
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    min-height: 180px;
+  }
 }
 
 .brand {
@@ -50,23 +72,6 @@ button {
   min-width: 0;
 }
 
-.header h1 {
-  font-size: 1.15rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.tagline {
-  font-size: 0.75rem;
-  color: #d1d5db;
-  line-height: 1.2;
-}
-
-@media (min-width: 640px) {
-  .header h1 { font-size: 1.35rem; }
-  .tagline { font-size: 0.85rem; }
-}
-
 .cart-btn {
   background: #fff;
   color: #111827;
@@ -74,6 +79,12 @@ button {
   border-radius: 8px;
   font-weight: 600;
   position: relative;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.cart-btn:hover {
+  transform: scale(1.05);
 }
 
 .cart-count {

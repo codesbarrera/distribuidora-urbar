@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="google-site-verification" content="2T6QfW7rfebdwu7hLj80UUCib_s5D6HuApVI69chHjA" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Camisetas Retro y Nuevas de Fútbol | Pasión Deportiva</title>
+  <title>Camisetas Retro y Nuevas de Fútbol | URbar Store</title>
   <meta name="description" content="Compra camisetas retro, buzos y sudaderas de América de Cali, Atlético Nacional y Millonarios. Calidad AAA, envíos a toda Colombia." />
   <link rel="canonical" href="https://distribuidora-urbar.vercel.app/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👕</text></svg>" />
@@ -12,11 +12,11 @@
 </head>
 <body>
 
-  <!-- ==================== MENÚ SUPERIOR (ESTILO DECATHLON) ==================== -->
+  <!-- ==================== MENÚ SUPERIOR ==================== -->
   <header class="top-nav">
     <div class="nav-container">
       <div class="nav-logo">
-        <h1>⚡ Pasión Deportiva</h1>
+        <h1>⚡ URBAR STORE</h1>
       </div>
       
       <div class="nav-search">
@@ -24,20 +24,22 @@
         <input type="search" id="searchInput" placeholder="Buscar camisetas, buzos, equipos..." />
       </div>
 
+      <!-- CARRITO MÁS GRANDE -->
       <button id="cartBtn" class="nav-cart-btn" aria-label="Abrir carrito">
-        🛒 <span id="cartCount" class="cart-count hidden">0</span>
+        <span style="font-size: 1.4rem;">🛒</span> 
+        <span>Carrito</span> 
+        <span id="cartCount" class="cart-count hidden">0</span>
       </button>
     </div>
     
-    <!-- Sub-menú -->
+    <!-- Sub-menú CON BOTONES FUNCIONALES -->
     <div class="sub-nav">
       <div class="sub-nav-container">
-        <a href="#">Inicio</a>
-        <a href="#">Camisetas</a>
-        <a href="#">Buzos</a>
-        <a href="#">Sudaderas</a>
-        <a href="#">Ofertas</a>
-        <a href="#">Envío Gratis</a>
+        <a href="#" class="nav-link active" data-filter="inicio">Inicio</a>
+        <a href="#" class="nav-link" data-filter="camiseta">Camisetas</a>
+        <a href="#" class="nav-link" data-filter="buso">Buzos</a>
+        <a href="#" class="nav-link" data-filter="sudadera">Sudaderas</a>
+        <a href="#" class="nav-link" data-filter="ofertas">Ofertas</a>
       </div>
     </div>
   </header>
@@ -68,7 +70,7 @@
     </section>
 
     <!-- ==================== TÍTULO Y FILTROS ==================== -->
-    <div class="catalog-header">
+    <div class="catalog-header" id="catalog-anchor">
       <div>
         <p class="breadcrumbs">Inicio > Catálogo</p>
         <h2 class="catalog-title">Todas las camisetas</h2>
@@ -87,7 +89,6 @@
     <!-- ==================== ÁREA DE PRODUCTOS Y FILTROS LATERALES ==================== -->
     <div class="catalog-layout">
       
-      <!-- Barra lateral de filtros -->
       <aside class="filters-sidebar">
         <h3>Filtros</h3>
         <select id="tipoFilter" class="input"><option value="">Todos los tipos</option></select>
@@ -96,7 +97,6 @@
         <button id="clearFilters" class="link-btn">Limpiar filtros</button>
       </aside>
 
-      <!-- Grilla de productos -->
       <section class="products-section">
         <div id="productsGrid" class="products-grid"></div>
         <p id="emptyMessage" class="empty-message hidden">No hay productos que coincidan.</p>
@@ -105,11 +105,11 @@
     </div>
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
+  <!-- ==================== FOOTER (Cambiado a URBAR STORE) ==================== -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-col">
-        <h2 class="footer-title">Pasión Deportiva</h2>
+        <h2 class="footer-title">URBAR STORE</h2>
         <p>Camisetas retro de equipos colombianos. Calidad AAA.</p>
       </div>
       <div class="footer-col">
@@ -120,7 +120,7 @@
         </ul>
       </div>
     </div>
-    <p class="footer-copy">© <span id="footerYear"></span> Pasión Deportiva.</p>
+    <p class="footer-copy">© <span id="footerYear"></span> URbar Store. Todos los derechos reservados.</p>
   </footer>
 
   <!-- ==================== CARRITO (DRAWER) ==================== -->

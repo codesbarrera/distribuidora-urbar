@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzjoUeMQhHPC3TY1vYmr3Xf_FnaD0aEbjYyL-3HPIeq18rrlvlQZz-bILdiBXavm1c/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyF2tOw3YZT5l_ji2fvL-E0JPbZllEq43eV5oTkrYz2pRh8eiimETCgnkZ98wBi4u0/exec";
 
 const state = {
   products: [],
@@ -299,7 +299,6 @@ async function submitOrder(e) {
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
     $("#successTotal").textContent = formatCOP(totalCalculado);
 
-    // SI WOMPI DEVUELVE EL LINK, LO USA. SI NO, AVISA EN CONSOLA Y USA EL GENÉRICO
     if (response.wompiLink) {
       $("#wompiPayBtn").href = response.wompiLink;
     } else {

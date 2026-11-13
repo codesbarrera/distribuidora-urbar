@@ -21,7 +21,7 @@
       
       <div class="nav-search">
         <span class="search-icon">🔍</span>
-        <input type="search" id="searchInput" placeholder="Buscar camisetas, buzos, equipos..." />
+        <input type="search" id="searchInput" placeholder="Buscar en URbar Store..." />
       </div>
 
       <button id="cartBtn" class="nav-cart-btn" aria-label="Abrir carrito">
@@ -31,6 +31,7 @@
       </button>
     </div>
     
+    <!-- Sub-menú -->
     <div class="sub-nav">
       <div class="sub-nav-container">
         <a href="#" class="nav-link active" data-filter="inicio">Inicio</a>
@@ -41,6 +42,36 @@
       </div>
     </div>
   </header>
+
+  <!-- ==================== BARRA DE ACCESOS RÁPIDOS (ESTILO FALABELLA) ==================== -->
+  <div class="quick-access-bar">
+    <div class="quick-access-container">
+      <div class="qa-item" onclick="filterByEquipo('america')">
+        <div class="qa-icon">🔴</div>
+        <span>América</span>
+      </div>
+      <div class="qa-item" onclick="filterByEquipo('nacional')">
+        <div class="qa-icon">🟢</div>
+        <span>Nacional</span>
+      </div>
+      <div class="qa-item" onclick="filterByEquipo('millonarios')">
+        <div class="qa-icon">🔵</div>
+        <span>Millonarios</span>
+      </div>
+      <div class="qa-item" onclick="document.querySelector('[data-filter=\'camiseta\']').click()">
+        <div class="qa-icon">👕</div>
+        <span>Camisetas</span>
+      </div>
+      <div class="qa-item" onclick="document.querySelector('[data-filter=\'buso\']').click()">
+        <div class="qa-icon">🧥</div>
+        <span>Buzos</span>
+      </div>
+      <div class="qa-item" onclick="document.querySelector('[data-filter=\'ofertas\']').click()">
+        <div class="qa-icon">🔥</div>
+        <span>Ofertas</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ==================== BANNER ==================== -->
   <section class="hero-banner" style="background-image: url('https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png');">
@@ -106,20 +137,19 @@
     </div>
 
     <div class="product-detail-layout">
-      
-      <!-- Columna Izquierda: SUGERENCIAS -->
+      <!-- Sugerencias -->
       <aside class="detail-suggestions">
         <h3 class="suggestions-title">También te puede gustar</h3>
         <div id="suggestionsList"></div>
         <button class="link-btn" onclick="showCatalog(event)" style="margin-top: 10px; width: 100%; text-align: center;">← Volver al catálogo</button>
       </aside>
 
-      <!-- Columna Centro: IMAGEN GRANDE -->
+      <!-- Imagen -->
       <div class="detail-image-container">
         <img id="detailImage" src="" alt="Producto" />
       </div>
 
-      <!-- Columna Derecha: INFORMACIÓN Y COMPRA -->
+      <!-- Info -->
       <div class="detail-info">
         <p class="detail-meta" id="detailMeta">Equipo · Tipo</p>
         <h1 class="detail-title" id="detailTitle">Nombre del Producto</h1>
@@ -145,12 +175,20 @@
     </div>
   </main>
 
-  <!-- ==================== FOOTER (Con Redes Sociales) ==================== -->
+  <!-- ==================== FOOTER ==================== -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-col">
         <h2 class="footer-title">URBAR STORE</h2>
         <p>Camisetas retro de equipos colombianos. Calidad AAA.</p>
+        
+        <!-- Medios de Pago (Robado de Falabella) -->
+        <div class="payment-methods">
+          <p style="margin-top: 15px; font-size: 0.8rem; color: #9ca3af;">Medios de pago:</p>
+          <div class="payment-icons">
+            <span>💳</span> <span>🏦</span> <span>💵</span> <span>📱</span>
+          </div>
+        </div>
       </div>
       
       <div class="footer-col">
@@ -161,7 +199,6 @@
         </ul>
       </div>
 
-      <!-- NUEVA COLUMNA DE REDES SOCIALES -->
       <div class="footer-col">
         <h2 class="footer-title">Síguenos</h2>
         <div class="social-links">
@@ -175,7 +212,6 @@
           </a>
         </div>
       </div>
-
     </div>
     <p class="footer-copy">© <span id="footerYear"></span> URbar Store. Todos los derechos reservados.</p>
   </footer>

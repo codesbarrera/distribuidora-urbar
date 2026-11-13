@@ -50,11 +50,11 @@ function buildFilterOptions() {
   fill($("#generoFilter"), generos, "Todos los géneros");
 }
 
-// ESTA FUNCIÓN PERMITE QUE LAS TARJETAS DE CATEGORÍA FILTREN LOS PRODUCTOS
 function filterByEquipo(equipo) {
   state.filters.equipo = equipo;
+  // Quitar el active de los botones del menú
+  document.querySelectorAll('.sub-nav a').forEach(l => l.classList.remove('active'));
   renderProducts();
-  // Hace scroll suave hacia los productos
   document.querySelector('.catalog-header').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -201,7 +201,7 @@ async function submitOrder(e) {
 
     const cleanPhone = telefono.replace(/\D/g, ''); 
     const phoneWA = cleanPhone.length === 10 ? '57' + cleanPhone : cleanPhone; 
-    let textWA = `¡Hola ${cliente}! Aquí está el recibo de tu pedido en *Pasión Deportiva*:\n\n`;
+    let textWA = `¡Hola ${cliente}! Aquí está el recibo de tu pedido en *URBAR STORE*:\n\n`;
     state.cart.forEach(i => { textWA += `👕 ${i.cantidad}x ${i.product.nombre} (Talla: ${i.talla})\n`; });
     textWA += `\n*Total:* ${formatCOP(order.total)}\n*Dirección:* ${direccion}, ${ciudad}\n\n¡Gracias por tu compra! ⚽`;
 
@@ -231,7 +231,43 @@ function bindEvents() {
   $("#clearFilters").addEventListener("click", () => {
     state.filters = { equipo: "", tipo: "", genero: "", search: "", soloDestacados: false, orden: "none" };
     $("#searchInput").value = ""; $("#tipoFilter").value = ""; $("#generoFilter").value = ""; $("#ordenFilter").value = "none"; $("#destacadosFilter").checked = false;
+    document.querySelectorAll('.sub-nav a').forEach(l => l.classList.remove('active'));
+    document.querySelector('.sub-nav a[data-filter="inicio"]').classList.add('active');
     renderProducts();
+  });
+
+  // ==========================================
+  // HACER QUE LOS BOTONES DEL MENÚ FUNCIONEN
+  // ==========================================
+  document.querySelectorAll('.sub-nav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Quitar la línea verde a todos y ponérsela al que se hizo clic
+      document.querySelectorAll('.sub-nav a').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      const filter = link.dataset.filter;
+      
+      if (filter === 'inicio') {
+        state.filters = { equipo: "", tipo: "", genero: "", search: "", soloDestacados: false, orden: "none" };
+        $("#tipoFilter").value = ""; $("#generoFilter").value = ""; $("#ordenFilter").value = "none"; $("#destacadosFilter").checked = false;
+      } else if (filter === 'ofertas') {
+        state.filters.tipo = "";
+        state.filters.soloDestacados = true;
+        $("#tipoFilter").value = ""; $("#destacadosFilter").checked = true;
+      } else {
+        state.filters.tipo = filter;
+        state.filters.soloDestacados = false;
+        $("#tipoFilter").value = filter; $("#destacadosFilter").checked = false;
+      }
+      
+      state.filters.equipo = ""; // Resetear el equipo si se elige un tipo
+      renderProducts();
+      
+      // Hacer scroll hasta los productos
+      document.querySelector('.catalog-header').scrollIntoView({ behavior: 'smooth' });
+    });
   });
 }
 

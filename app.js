@@ -27,7 +27,6 @@ async function postJSON(body) {
 }
 
 async function loadProducts() {
-  // MOSTRAR SKELETONS MIENTRAS CARGA
   const grid = $("#productsGrid");
   grid.innerHTML = Array(8).fill('<div class="skeleton-card"></div>').join('');
   
@@ -41,14 +40,22 @@ async function loadProducts() {
 }
 
 function buildFilterOptions() {
-  const equipos = [...new Set(state.products.map((p) => p.equipo))].sort();
   const tipos = [...new Set(state.products.map((p) => p.tipo))].sort();
   const generos = [...new Set(state.products.map((p) => p.genero))].sort();
   const fill = (select, values, label) => {
     select.innerHTML = `<option value="">${label}</option>`;
     values.forEach((v) => { select.innerHTML += `<option value="${v}">${v}</option>`; });
   };
-  fill($("#equipoFilter"), equipos, "Equipos"); fill($("#tipoFilter"), tipos, "Tipos"); fill($("#generoFilter"), generos, "Géneros");
+  fill($("#tipoFilter"), tipos, "Todos los tipos"); 
+  fill($("#generoFilter"), generos, "Todos los géneros");
+}
+
+// ESTA FUNCIÓN PERMITE QUE LAS TARJETAS DE CATEGORÍA FILTREN LOS PRODUCTOS
+function filterByEquipo(equipo) {
+  state.filters.equipo = equipo;
+  renderProducts();
+  // Hace scroll suave hacia los productos
+  document.querySelector('.catalog-header').scrollIntoView({ behavior: 'smooth' });
 }
 
 function applyFilters() {
@@ -72,10 +79,9 @@ function renderProducts() {
   $("#emptyMessage").classList.toggle("hidden", list.length > 0);
   grid.innerHTML = "";
   
-  // RENDERIZAR CON ANIMACIÓN EN CADENA (Uno por uno)
   list.forEach((p, index) => {
     const card = createProductCard(p);
-    card.style.animationDelay = `${index * 50}ms`; // Retraso progresivo
+    card.style.animationDelay = `${index * 50}ms`;
     grid.appendChild(card);
   });
 }
@@ -217,7 +223,6 @@ function bindEvents() {
   $("#checkoutView").addEventListener("submit", submitOrder);
 
   $("#searchInput").addEventListener("input", (e) => { state.filters.search = e.target.value; renderProducts(); });
-  $("#equipoFilter").addEventListener("change", (e) => { state.filters.equipo = e.target.value; renderProducts(); });
   $("#tipoFilter").addEventListener("change", (e) => { state.filters.tipo = e.target.value; renderProducts(); });
   $("#generoFilter").addEventListener("change", (e) => { state.filters.genero = e.target.value; renderProducts(); });
   $("#ordenFilter").addEventListener("change", (e) => { state.filters.orden = e.target.value; renderProducts(); });
@@ -225,7 +230,7 @@ function bindEvents() {
   
   $("#clearFilters").addEventListener("click", () => {
     state.filters = { equipo: "", tipo: "", genero: "", search: "", soloDestacados: false, orden: "none" };
-    $("#searchInput").value = ""; $("#equipoFilter").value = ""; $("#tipoFilter").value = ""; $("#generoFilter").value = ""; $("#ordenFilter").value = "none"; $("#destacadosFilter").checked = false;
+    $("#searchInput").value = ""; $("#tipoFilter").value = ""; $("#generoFilter").value = ""; $("#ordenFilter").value = "none"; $("#destacadosFilter").checked = false;
     renderProducts();
   });
 }

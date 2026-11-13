@@ -299,13 +299,14 @@ async function submitOrder(e) {
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
     $("#successTotal").textContent = formatCOP(totalCalculado);
 
+    // SI WOMPI FALLA, TE AVISA EN LUGAR DE MANDARTE AL LINK DE $0
     if (response.wompiLink) {
       $("#wompiPayBtn").href = response.wompiLink;
+      $("#wompiPayBtn").style.display = "block";
     } else {
-      console.error("Wompi no devolvió un link dinámico. Revisa los logs en Apps Script.");
-      $("#wompiPayBtn").href = "https://checkout.wompi.co/l/VPOS_kTvnBL"; // Link de respaldo
+      alert("⚠️ Hubo un error al generar el link de pago de Wompi. Por favor usa el pago por Nequi/Daviplata o revisa la consola de Apps Script.");
+      $("#wompiPayBtn").style.display = "none"; 
     }
-    $("#wompiPayBtn").style.display = "block";
 
     state.cart = []; saveCart(); updateCartCount(); renderCart(); showSuccessView();
     setTimeout(() => loadProducts(), 1500);

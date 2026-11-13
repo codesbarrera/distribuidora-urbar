@@ -15,6 +15,24 @@ function toast(msg, ms = 2500) {
   document.body.appendChild(el); setTimeout(() => el.remove(), ms);
 }
 
+/* ==========================================
+   PERSISTENCIA DEL CARRITO (localStorage)
+   ========================================== */
+function saveCart() {
+  localStorage.setItem("urbar_cart", JSON.stringify(state.cart));
+}
+
+function loadCart() {
+  try {
+    const saved = localStorage.getItem("urbar_cart");
+    if (saved) {
+      state.cart = JSON.parse(saved);
+    }
+  } catch (e) {
+    console.error("Error al cargar el carrito guardado", e);
+  }
+}
+
 async function getJSON(url) {
   const res = await fetch(url); const json = await res.json();
   if (!json.success) throw new Error(json.error); return json.data;
@@ -203,17 +221,25 @@ function showCatalog(e) {
 function addToCart(product, talla, cantidad = 1) {
   const idx = state.cart.findIndex((i) => i.product.id === product.id && i.talla === talla);
   if (idx >= 0) state.cart[idx].cantidad += cantidad; else state.cart.push({ product, talla, cantidad });
+  
+  saveCart(); // GUARDAMOS EL CARRITO
   updateCartCount(); renderCart(); openCart(); toast("Agregado 🛒");
 }
 
 function removeFromCart(id, talla) {
-  state.cart = state.cart.filter((i) => !(i.product.id === id && i.talla === talla)); updateCartCount(); renderCart();
+  state.cart = state.cart.filter((i) => !(i.product.id === id && i.talla === talla)); 
+  saveCart(); // GUARDAMOS EL CARRITO
+  updateCartCount(); renderCart();
 }
 
 function updateQty(id, talla, cantidad) {
   if (cantidad <= 0) return removeFromCart(id, talla);
   const item = state.cart.find((i) => i.product.id === id && i.talla === talla);
-  if (item) { item.cantidad = cantidad; updateCartCount(); renderCart(); }
+  if (item) { 
+    item.cantidad = cantidad; 
+    saveCart(); // GUARDAMOS EL CARRITO
+    updateCartCount(); renderCart(); 
+  }
 }
 
 function getCartTotal() { return state.cart.reduce((acc, i) => acc + i.product.precio * i.cantidad, 0); }
@@ -288,7 +314,10 @@ async function submitOrder(e) {
 
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
 
-    state.cart = []; updateCartCount(); renderCart(); showSuccessView();
+    state.cart = []; 
+    saveCart(); // VACIAMOS EL CARRITO GUARDADO PORQUE YA SE COMPRÓ
+    
+    updateCartCount(); renderCart(); showSuccessView();
     setTimeout(() => loadProducts(), 1500);
   } catch (err) {
     errorEl.textContent = err.message || "Error al enviar."; errorEl.classList.remove("hidden");
@@ -364,5 +393,10 @@ function updateProductStructuredData(products) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  bindEvents(); renderCart(); loadProducts(); $("#footerYear").textContent = new Date().getFullYear();
+  loadCart(); // <--- CARGAMOS EL CARRITO GUARDADO AL ENTRAR
+  bindEvents(); 
+  renderCart(); 
+  updateCartCount();
+  loadProducts(); 
+  $("#footerYear").textContent = new Date().getFullYear();
 });

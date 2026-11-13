@@ -15,7 +15,7 @@
   <!-- ==================== MENÚ SUPERIOR ==================== -->
   <header class="top-nav">
     <div class="nav-container">
-      <div class="nav-logo">
+      <div class="nav-logo" onclick="showCatalog()" style="cursor: pointer;">
         <h1>⚡ URBAR STORE</h1>
       </div>
       
@@ -24,7 +24,6 @@
         <input type="search" id="searchInput" placeholder="Buscar camisetas, buzos, equipos..." />
       </div>
 
-      <!-- CARRITO MÁS GRANDE -->
       <button id="cartBtn" class="nav-cart-btn" aria-label="Abrir carrito">
         <span style="font-size: 1.4rem;">🛒</span> 
         <span>Carrito</span> 
@@ -32,7 +31,6 @@
       </button>
     </div>
     
-    <!-- Sub-menú CON BOTONES FUNCIONALES -->
     <div class="sub-nav">
       <div class="sub-nav-container">
         <a href="#" class="nav-link active" data-filter="inicio">Inicio</a>
@@ -48,9 +46,9 @@
   <section class="hero-banner" style="background-image: url('https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png');">
   </section>
 
-  <main class="main-content">
+  <!-- ==================== VISTA 1: CATÁLOGO ==================== -->
+  <main id="catalogView" class="main-content">
     
-    <!-- ==================== CATEGORÍAS DESTACADAS ==================== -->
     <section class="categories-section">
       <h2 class="main-title">Explora por equipo</h2>
       <div class="categories-grid">
@@ -69,7 +67,6 @@
       </div>
     </section>
 
-    <!-- ==================== TÍTULO Y FILTROS ==================== -->
     <div class="catalog-header" id="catalog-anchor">
       <div>
         <p class="breadcrumbs">Inicio > Catálogo</p>
@@ -86,9 +83,7 @@
       </div>
     </div>
 
-    <!-- ==================== ÁREA DE PRODUCTOS Y FILTROS LATERALES ==================== -->
     <div class="catalog-layout">
-      
       <aside class="filters-sidebar">
         <h3>Filtros</h3>
         <select id="tipoFilter" class="input"><option value="">Todos los tipos</option></select>
@@ -101,11 +96,56 @@
         <div id="productsGrid" class="products-grid"></div>
         <p id="emptyMessage" class="empty-message hidden">No hay productos que coincidan.</p>
       </section>
-
     </div>
   </main>
 
-  <!-- ==================== FOOTER (Cambiado a URBAR STORE) ==================== -->
+  <!-- ==================== VISTA 2: DETALLE DEL PRODUCTO ==================== -->
+  <main id="productDetailView" class="main-content hidden">
+    <div class="breadcrumbs" style="margin-bottom: 20px;">
+      <a href="#" onclick="showCatalog(event)" style="color: #22c55e; text-decoration: none;">Inicio</a> > Catálogo > <span id="detailBreadcrumb">Producto</span>
+    </div>
+
+    <div class="product-detail-layout">
+      
+      <!-- Columna Izquierda: SUGERENCIAS -->
+      <aside class="detail-suggestions">
+        <h3 class="suggestions-title">También te puede gustar</h3>
+        <div id="suggestionsList"></div>
+        <button class="link-btn" onclick="showCatalog(event)" style="margin-top: 10px; width: 100%; text-align: center;">← Volver al catálogo</button>
+      </aside>
+
+      <!-- Columna Centro: IMAGEN GRANDE -->
+      <div class="detail-image-container">
+        <img id="detailImage" src="" alt="Producto" />
+      </div>
+
+      <!-- Columna Derecha: INFORMACIÓN Y COMPRA -->
+      <div class="detail-info">
+        <p class="detail-meta" id="detailMeta">Equipo · Tipo</p>
+        <h1 class="detail-title" id="detailTitle">Nombre del Producto</h1>
+        <p class="detail-price" id="detailPrice">$0</p>
+        
+        <hr class="divider" />
+        
+        <div class="detail-options">
+          <p class="option-label">Elige tu talla:</p>
+          <div id="detailSizes" class="tallas"></div>
+        </div>
+
+        <div class="detail-specs">
+          <p><strong>Calidad:</strong> <span id="detailQuality">-</span></p>
+          <p><strong>Género:</strong> <span id="detailGender">-</span></p>
+          <p><strong>Disponibilidad:</strong> <span id="detailStock">-</span></p>
+        </div>
+
+        <button id="detailAddBtn" class="btn-primary" style="padding: 16px; font-size: 1.1rem; margin-top: 20px;">
+          Agregar al carrito 🛒
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-col">
@@ -158,9 +198,7 @@
     <div id="successView" class="success-view hidden">
       <div class="success-icon">✅</div>
       <p>Tu pedido fue registrado. Te llegará un recibo al correo.</p>
-      <a id="whatsappReceiptBtn" href="#" target="_blank" class="btn-success" style="text-align: center; text-decoration: none; display: block; margin-bottom: 10px; background-color: #25D366;">
-        📲 Recibir recibo por WhatsApp
-      </a>
+      <a id="whatsappReceiptBtn" href="#" target="_blank" class="btn-success" style="text-align: center; text-decoration: none; display: block; margin-bottom: 10px; background-color: #25D366;">📲 Recibir recibo por WhatsApp</a>
       <button id="continueShopping" class="btn-primary">Seguir comprando</button>
     </div>
   </aside>

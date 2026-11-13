@@ -5,7 +5,6 @@
   
   <!-- ==================== VERIFICACIÓN DE GOOGLE ==================== -->
   <meta name="google-site-verification" content="2T6QfW7rfebdwu7hLj80UUCib_s5D6HuApVI69chHjA" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- ==================== SEO PRIMARIO ==================== -->
@@ -15,32 +14,18 @@
   <meta name="author" content="URbar Store" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <meta name="language" content="Spanish" />
-  <meta name="revisit-after" content="7 days" />
-
-  <!-- Geo (SEO local en Colombia) -->
-  <meta name="geo.region" content="CO" />
-  <meta name="geo.placename" content="Colombia" />
-
-  <!-- Canonical -->
   <link rel="canonical" href="https://distribuidora-urbar.vercel.app/" />
 
-  <!-- ==================== OPEN GRAPH (Para WhatsApp y Facebook) ==================== -->
+  <!-- ==================== OPEN GRAPH (WhatsApp / Facebook) ==================== -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="URbar Store" />
   <meta property="og:title" content="Camisetas Retro y Nuevas de Fútbol | URbar Store" />
   <meta property="og:description" content="Camisetas retro, buzos y sudaderas de los equipos colombianos. Calidad AAA y envíos a todo el país." />
   <meta property="og:image" content="https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png" />
-  <meta property="og:image:alt" content="Banner URbar Store" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://distribuidora-urbar.vercel.app/" />
   <meta property="og:locale" content="es_CO" />
-
-  <!-- ==================== TWITTER CARD ==================== -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Camisetas Retro y Nuevas de Fútbol Colombiano" />
-  <meta name="twitter:description" content="América, Nacional, Millonarios. Calidad AAA, envíos a todo Colombia." />
-  <meta name="twitter:image" content="https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png" />
 
   <!-- ==================== TEMA / FAVICON ==================== -->
   <meta name="theme-color" content="#0b1120" />
@@ -50,8 +35,7 @@
   <!-- ==================== PRECONNECT (Rendimiento) ==================== -->
   <link rel="preconnect" href="https://script.google.com" />
   <link rel="preconnect" href="https://i.postimg.cc" />
-  <link rel="dns-prefetch" href="https://script.google.com" />
-
+  
   <link rel="stylesheet" href="styles.css" />
 
   <!-- ==================== DATOS ESTRUCTURADOS: TIENDA ==================== -->
@@ -64,10 +48,7 @@
     "url": "https://distribuidora-urbar.vercel.app/",
     "image": "https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png",
     "priceRange": "$$",
-    "areaServed": {
-      "@type": "Country",
-      "name": "Colombia"
-    },
+    "areaServed": { "@type": "Country", "name": "Colombia" },
     "currenciesAccepted": "COP",
     "paymentAccepted": "Efectivo, Transferencia bancaria, Pago contra entrega",
     "sameAs": [
@@ -100,7 +81,6 @@
       </button>
     </div>
     
-    <!-- Sub-menú -->
     <div class="sub-nav">
       <div class="sub-nav-container">
         <a href="#" class="nav-link active" data-filter="inicio">Inicio</a>
@@ -115,40 +95,20 @@
   <!-- ==================== BARRA DE ACCESOS RÁPIDOS ==================== -->
   <div class="quick-access-bar">
     <div class="quick-access-container">
-      <div class="qa-item" onclick="filterByEquipo('america')">
-        <div class="qa-icon">🔴</div>
-        <span>América</span>
-      </div>
-      <div class="qa-item" onclick="filterByEquipo('nacional')">
-        <div class="qa-icon">🟢</div>
-        <span>Nacional</span>
-      </div>
-      <div class="qa-item" onclick="filterByEquipo('millonarios')">
-        <div class="qa-icon">🔵</div>
-        <span>Millonarios</span>
-      </div>
-      <div class="qa-item" onclick="document.querySelector('[data-filter=\'camiseta\']').click()">
-        <div class="qa-icon">👕</div>
-        <span>Camisetas</span>
-      </div>
-      <div class="qa-item" onclick="document.querySelector('[data-filter=\'buso\']').click()">
-        <div class="qa-icon">🧥</div>
-        <span>Buzos</span>
-      </div>
-      <div class="qa-item" onclick="document.querySelector('[data-filter=\'ofertas\']').click()">
-        <div class="qa-icon">🔥</div>
-        <span>Ofertas</span>
-      </div>
+      <div class="qa-item" onclick="filterByEquipo('america')"><div class="qa-icon">🔴</div><span>América</span></div>
+      <div class="qa-item" onclick="filterByEquipo('nacional')"><div class="qa-icon">🟢</div><span>Nacional</span></div>
+      <div class="qa-item" onclick="filterByEquipo('millonarios')"><div class="qa-icon">🔵</div><span>Millonarios</span></div>
+      <div class="qa-item" onclick="document.querySelector('[data-filter=\'camiseta\']').click()"><div class="qa-icon">👕</div><span>Camisetas</span></div>
+      <div class="qa-item" onclick="document.querySelector('[data-filter=\'buso\']').click()"><div class="qa-icon">🧥</div><span>Buzos</span></div>
+      <div class="qa-item" onclick="document.querySelector('[data-filter=\'ofertas\']').click()"><div class="qa-icon">🔥</div><span>Ofertas</span></div>
     </div>
   </div>
 
   <!-- ==================== BANNER ==================== -->
-  <section class="hero-banner" style="background-image: url('https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png');">
-  </section>
+  <section class="hero-banner" style="background-image: url('https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png');"></section>
 
   <!-- ==================== VISTA 1: CATÁLOGO ==================== -->
   <main id="catalogView" class="main-content">
-    
     <section class="categories-section">
       <h2 class="main-title">Explora por equipo</h2>
       <div class="categories-grid">
@@ -172,7 +132,6 @@
         <p class="breadcrumbs">Inicio > Catálogo</p>
         <h2 class="catalog-title">Todas las camisetas</h2>
       </div>
-      
       <div class="catalog-toolbar">
         <p id="resultsCount" class="results-count">Cargando productos...</p>
         <select id="ordenFilter" class="input sort-select" aria-label="Ordenar productos">
@@ -206,19 +165,16 @@
     </div>
 
     <div class="product-detail-layout">
-      <!-- Sugerencias -->
       <aside class="detail-suggestions">
         <h3 class="suggestions-title">También te puede gustar</h3>
         <div id="suggestionsList"></div>
         <button class="link-btn" onclick="showCatalog(event)" style="margin-top: 10px; width: 100%; text-align: center;">← Volver al catálogo</button>
       </aside>
 
-      <!-- Imagen -->
       <div class="detail-image-container">
         <img id="detailImage" src="" alt="Producto" />
       </div>
 
-      <!-- Info -->
       <div class="detail-info">
         <p class="detail-meta" id="detailMeta">Equipo · Tipo</p>
         <h1 class="detail-title" id="detailTitle">Nombre del Producto</h1>
@@ -250,8 +206,6 @@
       <div class="footer-col">
         <h2 class="footer-title">URBAR STORE</h2>
         <p>Camisetas retro de equipos colombianos. Calidad AAA.</p>
-        
-        <!-- Medios de Pago -->
         <div class="payment-methods">
           <p style="margin-top: 15px; font-size: 0.8rem; color: #9ca3af;">Medios de pago:</p>
           <div class="payment-icons">
@@ -320,10 +274,34 @@
       </footer>
     </form>
 
-    <div id="successView" class="success-view hidden">
-      <div class="success-icon">✅</div>
-      <p>Tu pedido fue registrado. Te llegará un recibo al correo.</p>
-      <a id="whatsappReceiptBtn" href="#" target="_blank" class="btn-success" style="text-align: center; text-decoration: none; display: block; margin-bottom: 10px; background-color: #25D366;">📲 Recibir recibo por WhatsApp</a>
+    <!-- VISTA DE ÉXITO CON MÉTODOS DE PAGO -->
+    <div id="successView" class="success-view hidden" style="justify-content: flex-start; overflow-y: auto;">
+      <div class="success-icon" style="margin-top: 20px;">✅</div>
+      <p style="font-weight: 600; font-size: 1.1rem;">¡Pedido registrado con éxito!</p>
+      
+      <!-- CAJA DE PAGO -->
+      <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; width: 100%; text-align: left; margin: 15px 0;">
+        <p style="font-weight: 700; margin-bottom: 10px; color: #111827;">Instrucciones de pago:</p>
+        <p style="font-size: 0.9rem; margin-bottom: 15px;">Total a pagar: <strong id="successTotal" style="color: #22c55e; font-size: 1.2rem;">$0</strong></p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>💜 Nequi: <strong>300 517 7418</strong></span>
+            <button type="button" onclick="copyText('3005177418', this)" style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">Copiar</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>❤️ Daviplata: <strong>300 517 7418</strong></span>
+            <button type="button" onclick="copyText('3005177418', this)" style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">Copiar</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>🏦 Bancolombia Ahorros: <strong>123-456789-00</strong></span>
+            <button type="button" onclick="copyText('12345678900', this)" style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">Copiar</button>
+          </div>
+        </div>
+        <p style="font-size: 0.8rem; color: #6b7280; margin-top: 15px; text-align: center;">Envía el comprobante por WhatsApp para coordinar el envío.</p>
+      </div>
+      
+      <a id="whatsappReceiptBtn" href="#" target="_blank" class="btn-success" style="text-align: center; text-decoration: none; display: block; margin-bottom: 10px; background-color: #25D366;">📲 Enviar comprobante por WhatsApp</a>
       <button id="continueShopping" class="btn-primary">Seguir comprando</button>
     </div>
   </aside>

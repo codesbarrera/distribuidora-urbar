@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbw13XHijvij69hcrHdBA2oJ800nqMr3dJNzSDHSxPiE0xfHH72sVTO4mS3XNTRqMlQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzjoUeMQhHPC3TY1vYmr3Xf_FnaD0aEbjYyL-3HPIeq18rrlvlQZz-bILdiBXavm1c/exec";
 
 const state = {
   products: [],
@@ -299,10 +299,11 @@ async function submitOrder(e) {
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
     $("#successTotal").textContent = formatCOP(totalCalculado);
 
-    // SI WOMPI DEVUELVE EL LINK, LO USA. SI NO, USA EL LINK GENÉRICO QUE ME DISTE.
+    // SI WOMPI DEVUELVE EL LINK, LO USA. SI NO, AVISA EN CONSOLA Y USA EL GENÉRICO
     if (response.wompiLink) {
       $("#wompiPayBtn").href = response.wompiLink;
     } else {
+      console.error("Wompi no devolvió un link dinámico. Revisa los logs en Apps Script.");
       $("#wompiPayBtn").href = "https://checkout.wompi.co/l/VPOS_kTvnBL"; // Link de respaldo
     }
     $("#wompiPayBtn").style.display = "block";

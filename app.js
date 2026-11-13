@@ -90,9 +90,7 @@ function createProductCard(product) {
   const card = document.createElement("article"); card.className = "product-card";
   const sinStock = product.stock <= 0; const tallaInicial = product.tallas[0] || "";
 
-  // AL HACER CLIC EN LA TARJETA, ABRIMOS EL DETALLE
   card.addEventListener('click', (e) => {
-    // Evitar que se abra el detalle si se hizo clic en un botón de talla o en "Agregar"
     if(e.target.classList.contains('talla-btn') || e.target.classList.contains('add-btn')) return;
     openProductDetail(product.id);
   });
@@ -126,20 +124,15 @@ function createProductCard(product) {
   return card;
 }
 
-/* ==========================================
-   LÓGICA DE LA VISTA DE DETALLE
-   ========================================== */
 function openProductDetail(id) {
   const product = state.products.find(p => p.id === id);
   if (!product) return;
   state.currentProduct = product;
 
-  // Ocultar catálogo y mostrar detalle
   $("#catalogView").classList.add("hidden");
   $("#productDetailView").classList.remove("hidden");
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Rellenar datos
   $("#detailBreadcrumb").textContent = product.nombre;
   $("#detailImage").src = product.imagen;
   $("#detailImage").alt = product.nombre;
@@ -150,7 +143,6 @@ function openProductDetail(id) {
   $("#detailGender").textContent = product.genero;
   $("#detailStock").textContent = product.stock > 0 ? `${product.stock} disponibles` : "Agotado";
 
-  // Tallas
   const sizesWrap = $("#detailSizes");
   sizesWrap.innerHTML = "";
   let selectedSize = product.tallas[0];
@@ -167,7 +159,6 @@ function openProductDetail(id) {
     sizesWrap.appendChild(btn);
   });
 
-  // Botón de agregar
   const addBtn = $("#detailAddBtn");
   if (product.stock <= 0) {
     addBtn.disabled = true;
@@ -175,20 +166,17 @@ function openProductDetail(id) {
   } else {
     addBtn.disabled = false;
     addBtn.textContent = "Agregar al carrito 🛒";
-    // Clonar el botón para eliminar eventos anteriores
     const newBtn = addBtn.cloneNode(true);
     addBtn.parentNode.replaceChild(newBtn, addBtn);
     newBtn.addEventListener('click', () => addToCart(product, selectedSize));
   }
 
-  // Generar Sugerencias (Otros productos aleatorios que no sean este)
   const suggestionsWrap = $("#suggestionsList");
   suggestionsWrap.innerHTML = "";
-  
   const suggestions = state.products
-    .filter(p => p.id !== product.id) // Que no sea el mismo
-    .sort(() => 0.5 - Math.random()) // Orden aleatorio
-    .slice(0, 5); // Tomar 5
+    .filter(p => p.id !== product.id)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 5);
 
   suggestions.forEach(s => {
     const div = document.createElement("div");
@@ -200,7 +188,7 @@ function openProductDetail(id) {
         <span>${formatCOP(s.precio)}</span>
       </div>
     `;
-    div.addEventListener('click', () => openProductDetail(s.id)); // Al dar clic, recarga la vista
+    div.addEventListener('click', () => openProductDetail(s.id));
     suggestionsWrap.appendChild(div);
   });
 }
@@ -212,9 +200,6 @@ function showCatalog(e) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ==========================================
-   CARRITO
-   ========================================== */
 function addToCart(product, talla, cantidad = 1) {
   const idx = state.cart.findIndex((i) => i.product.id === product.id && i.talla === talla);
   if (idx >= 0) state.cart[idx].cantidad += cantidad; else state.cart.push({ product, talla, cantidad });
@@ -338,7 +323,7 @@ function bindEvents() {
   document.querySelectorAll('.sub-nav a').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      showCatalog(); // Si está en detalle, lo devuelve al catálogo
+      showCatalog();
 
       document.querySelectorAll('.sub-nav a').forEach(l => l.classList.remove('active'));
       link.classList.add('active');

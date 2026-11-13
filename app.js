@@ -279,7 +279,6 @@ async function submitOrder(e) {
 
   const totalCalculado = getCartTotal();
   
-  // Preparamos los productos para Tag Manager y Meta
   const cartParaAnalytics = state.cart.map((i) => ({
     item_id: i.product.id,
     item_name: i.product.nombre,

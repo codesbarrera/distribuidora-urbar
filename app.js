@@ -16,21 +16,33 @@ function toast(msg, ms = 2500) {
 }
 
 /* ==========================================
-   PERSISTENCIA DEL CARRITO (localStorage)
+   FUNCIÓN PARA COPIAR AL PORTAPAPELES
    ========================================== */
-function saveCart() {
-  localStorage.setItem("urbar_cart", JSON.stringify(state.cart));
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const originalText = btn.textContent;
+    btn.textContent = "¡Copiado!";
+    btn.style.background = "#22c55e";
+    btn.style.color = "#fff";
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = "#e5e7eb";
+      btn.style.color = "#111827";
+    }, 2000);
+  }).catch(err => {
+    alert("No se pudo copiar: " + text);
+  });
 }
 
+/* ==========================================
+   PERSISTENCIA DEL CARRITO (localStorage)
+   ========================================== */
+function saveCart() { localStorage.setItem("urbar_cart", JSON.stringify(state.cart)); }
 function loadCart() {
   try {
     const saved = localStorage.getItem("urbar_cart");
-    if (saved) {
-      state.cart = JSON.parse(saved);
-    }
-  } catch (e) {
-    console.error("Error al cargar el carrito guardado", e);
-  }
+    if (saved) state.cart = JSON.parse(saved);
+  } catch (e) { console.error("Error al cargar el carrito", e); }
 }
 
 async function getJSON(url) {
@@ -191,10 +203,7 @@ function openProductDetail(id) {
 
   const suggestionsWrap = $("#suggestionsList");
   suggestionsWrap.innerHTML = "";
-  const suggestions = state.products
-    .filter(p => p.id !== product.id)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 5);
+  const suggestions = state.products.filter(p => p.id !== product.id).sort(() => 0.5 - Math.random()).slice(0, 5);
 
   suggestions.forEach(s => {
     const div = document.createElement("div");
@@ -221,25 +230,18 @@ function showCatalog(e) {
 function addToCart(product, talla, cantidad = 1) {
   const idx = state.cart.findIndex((i) => i.product.id === product.id && i.talla === talla);
   if (idx >= 0) state.cart[idx].cantidad += cantidad; else state.cart.push({ product, talla, cantidad });
-  
-  saveCart(); // GUARDAMOS EL CARRITO
-  updateCartCount(); renderCart(); openCart(); toast("Agregado 🛒");
+  saveCart(); updateCartCount(); renderCart(); openCart(); toast("Agregado 🛒");
 }
 
 function removeFromCart(id, talla) {
   state.cart = state.cart.filter((i) => !(i.product.id === id && i.talla === talla)); 
-  saveCart(); // GUARDAMOS EL CARRITO
-  updateCartCount(); renderCart();
+  saveCart(); updateCartCount(); renderCart();
 }
 
 function updateQty(id, talla, cantidad) {
   if (cantidad <= 0) return removeFromCart(id, talla);
   const item = state.cart.find((i) => i.product.id === id && i.talla === talla);
-  if (item) { 
-    item.cantidad = cantidad; 
-    saveCart(); // GUARDAMOS EL CARRITO
-    updateCartCount(); renderCart(); 
-  }
+  if (item) { item.cantidad = cantidad; saveCart(); updateCartCount(); renderCart(); }
 }
 
 function getCartTotal() { return state.cart.reduce((acc, i) => acc + i.product.precio * i.cantidad, 0); }
@@ -280,7 +282,13 @@ function openCart() { $("#cartOverlay").classList.remove("hidden"); $("#cartDraw
 function closeCart() { $("#cartOverlay").classList.add("hidden"); $("#cartDrawer").classList.add("hidden"); showCartView(); }
 function showCartView() { $("#cartView").classList.remove("hidden"); $("#checkoutView").classList.add("hidden"); $("#successView").classList.add("hidden"); }
 function showCheckoutView() { $("#cartView").classList.add("hidden"); $("#checkoutView").classList.remove("hidden"); $("#successView").classList.add("hidden"); $("#checkoutTotal").textContent = formatCOP(getCartTotal()); }
-function showSuccessView() { $("#cartView").classList.add("hidden"); $("#checkoutView").classList.add("hidden"); $("#successView").classList.remove("hidden"); }
+function showSuccessView() { 
+  $("#cartView").classList.add("hidden"); 
+  $("#checkoutView").classList.add("hidden"); 
+  $("#successView").classList.remove("hidden"); 
+  // Actualizamos el total en la pantalla de éxito
+  $("#successTotal").textContent = formatCOP(getCartTotal());
+}
 
 async function submitOrder(e) {
   e.preventDefault();
@@ -310,14 +318,11 @@ async function submitOrder(e) {
     const phoneWA = cleanPhone.length === 10 ? '57' + cleanPhone : cleanPhone; 
     let textWA = `¡Hola ${cliente}! Aquí está el recibo de tu pedido en *URBAR STORE*:\n\n`;
     state.cart.forEach(i => { textWA += `👕 ${i.cantidad}x ${i.product.nombre} (Talla: ${i.talla})\n`; });
-    textWA += `\n*Total:* ${formatCOP(order.total)}\n*Dirección:* ${direccion}, ${ciudad}\n\n¡Gracias por tu compra! ⚽`;
+    textWA += `\n*Total:* ${formatCOP(order.total)}\n*Dirección:* ${direccion}, ${ciudad}\n\n¡Adjunto mi comprobante de pago! ⚽`;
 
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
 
-    state.cart = []; 
-    saveCart(); // VACIAMOS EL CARRITO GUARDADO PORQUE YA SE COMPRÓ
-    
-    updateCartCount(); renderCart(); showSuccessView();
+    state.cart = []; saveCart(); updateCartCount(); renderCart(); showSuccessView();
     setTimeout(() => loadProducts(), 1500);
   } catch (err) {
     errorEl.textContent = err.message || "Error al enviar."; errorEl.classList.remove("hidden");
@@ -353,10 +358,8 @@ function bindEvents() {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       showCatalog();
-
       document.querySelectorAll('.sub-nav a').forEach(l => l.classList.remove('active'));
       link.classList.add('active');
-
       const filter = link.dataset.filter;
       
       if (filter === 'inicio') {
@@ -369,7 +372,6 @@ function bindEvents() {
         state.filters.tipo = filter; state.filters.soloDestacados = false;
         $("#tipoFilter").value = filter; $("#destacadosFilter").checked = false;
       }
-      
       state.filters.equipo = ""; 
       renderProducts();
       document.querySelector('.catalog-header').scrollIntoView({ behavior: 'smooth' });
@@ -393,10 +395,6 @@ function updateProductStructuredData(products) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadCart(); // <--- CARGAMOS EL CARRITO GUARDADO AL ENTRAR
-  bindEvents(); 
-  renderCart(); 
-  updateCartCount();
-  loadProducts(); 
+  loadCart(); bindEvents(); renderCart(); updateCartCount(); loadProducts(); 
   $("#footerYear").textContent = new Date().getFullYear();
 });

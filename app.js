@@ -282,11 +282,12 @@ function openCart() { $("#cartOverlay").classList.remove("hidden"); $("#cartDraw
 function closeCart() { $("#cartOverlay").classList.add("hidden"); $("#cartDrawer").classList.add("hidden"); showCartView(); }
 function showCartView() { $("#cartView").classList.remove("hidden"); $("#checkoutView").classList.add("hidden"); $("#successView").classList.add("hidden"); }
 function showCheckoutView() { $("#cartView").classList.add("hidden"); $("#checkoutView").classList.remove("hidden"); $("#successView").classList.add("hidden"); $("#checkoutTotal").textContent = formatCOP(getCartTotal()); }
+
+// ELIMINAMOS LA ACTUALIZACIÓN DEL TOTAL DE AQUÍ
 function showSuccessView() { 
   $("#cartView").classList.add("hidden"); 
   $("#checkoutView").classList.add("hidden"); 
   $("#successView").classList.remove("hidden"); 
-  $("#successTotal").textContent = formatCOP(getCartTotal());
 }
 
 async function submitOrder(e) {
@@ -301,10 +302,13 @@ async function submitOrder(e) {
     errorEl.textContent = "Completa nombre, teléfono y dirección."; errorEl.classList.remove("hidden"); return;
   }
 
+  // 1. CALCULAMOS EL TOTAL ANTES DE VACIAR EL CARRITO
+  const totalCalculado = getCartTotal();
+
   const order = {
     cliente, email, telefono, direccion, ciudad,
     items: state.cart.map((i) => ({ id: i.product.id, nombre: i.product.nombre, talla: i.talla, cantidad: i.cantidad, precio: i.product.precio })),
-    total: getCartTotal(),
+    total: totalCalculado,
   };
 
   const btn = $("#submitOrder"); btn.disabled = true; btn.textContent = "Enviando...";
@@ -313,18 +317,21 @@ async function submitOrder(e) {
     await postJSON({ action: "addOrder", order });
     try { await postJSON({ action: "updateStock", items: state.cart.map((i) => ({ id: i.product.id, cantidad: i.cantidad })) }); } catch (err) {}
 
-    // EL MENSAJE DE WHATSAPP LLEGARÁ A TU NÚMERO DE PEDIDOS (3005177418)
     const phoneWA = '573005177418'; 
     let textWA = `¡Hola *URBAR STORE*! Aquí está el comprobante de mi pedido:\n\n`;
     textWA += `*Cliente:* ${cliente}\n`;
     textWA += `*Dirección:* ${direccion}, ${ciudad}\n\n`;
     textWA += `*Productos:*\n`;
     state.cart.forEach(i => { textWA += `👕 ${i.cantidad}x ${i.product.nombre} (Talla: ${i.talla})\n`; });
-    textWA += `\n*Total pagado:* ${formatCOP(order.total)}\n\n`;
+    textWA += `\n*Total pagado:* ${formatCOP(totalCalculado)}\n\n`;
     textWA += `Adjunto mi comprobante de pago. ⚽`;
 
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
 
+    // 2. ACTUALIZAMOS EL TEXTO EN LA PANTALLA CON EL TOTAL YA CALCULADO
+    $("#successTotal").textContent = formatCOP(totalCalculado);
+
+    // 3. AHORA SÍ, VACIAMOS EL CARRITO
     state.cart = []; saveCart(); updateCartCount(); renderCart(); showSuccessView();
     setTimeout(() => loadProducts(), 1500);
   } catch (err) {

@@ -2,15 +2,84 @@
 <html lang="es-CO">
 <head>
   <meta charset="UTF-8" />
+  
+  <!-- ==================== VERIFICACIÓN DE GOOGLE ==================== -->
   <meta name="google-site-verification" content="2T6QfW7rfebdwu7hLj80UUCib_s5D6HuApVI69chHjA" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ==================== SEO PRIMARIO ==================== -->
   <title>Camisetas Retro y Nuevas de Fútbol | URbar Store</title>
-  <meta name="description" content="Compra camisetas retro, buzos y sudaderas de América de Cali, Atlético Nacional y Millonarios. Calidad AAA, envíos a toda Colombia." />
+  <meta name="description" content="Compra camisetas retro, buzos y sudaderas de América de Cali, Atlético Nacional y Millonarios. Calidad AAA, envíos a toda Colombia. Pide fácil y rápido." />
+  <meta name="keywords" content="camisetas retro, camisetas de fútbol, América de Cali, Atlético Nacional, Millonarios, buzos, sudaderas, Colombia, calidad AAA" />
+  <meta name="author" content="URbar Store" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="language" content="Spanish" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- Geo (SEO local en Colombia) -->
+  <meta name="geo.region" content="CO" />
+  <meta name="geo.placename" content="Colombia" />
+
+  <!-- Canonical -->
   <link rel="canonical" href="https://distribuidora-urbar.vercel.app/" />
+
+  <!-- ==================== OPEN GRAPH (Para WhatsApp y Facebook) ==================== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="URbar Store" />
+  <meta property="og:title" content="Camisetas Retro y Nuevas de Fútbol | URbar Store" />
+  <meta property="og:description" content="Camisetas retro, buzos y sudaderas de los equipos colombianos. Calidad AAA y envíos a todo el país." />
+  <meta property="og:image" content="https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png" />
+  <meta property="og:image:alt" content="Banner URbar Store" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://distribuidora-urbar.vercel.app/" />
+  <meta property="og:locale" content="es_CO" />
+
+  <!-- ==================== TWITTER CARD ==================== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Camisetas Retro y Nuevas de Fútbol Colombiano" />
+  <meta name="twitter:description" content="América, Nacional, Millonarios. Calidad AAA, envíos a todo Colombia." />
+  <meta name="twitter:image" content="https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png" />
+
+  <!-- ==================== TEMA / FAVICON ==================== -->
+  <meta name="theme-color" content="#0b1120" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👕</text></svg>" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👕</text></svg>" />
+
+  <!-- ==================== PRECONNECT (Rendimiento) ==================== -->
+  <link rel="preconnect" href="https://script.google.com" />
+  <link rel="preconnect" href="https://i.postimg.cc" />
+  <link rel="dns-prefetch" href="https://script.google.com" />
+
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- ==================== DATOS ESTRUCTURADOS: TIENDA ==================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "OnlineStore",
+    "name": "URbar Store",
+    "description": "Camisetas retro, buzos y sudaderas de los principales equipos de fútbol colombiano.",
+    "url": "https://distribuidora-urbar.vercel.app/",
+    "image": "https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png",
+    "priceRange": "$$",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Colombia"
+    },
+    "currenciesAccepted": "COP",
+    "paymentAccepted": "Efectivo, Transferencia bancaria, Pago contra entrega",
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61596004091104",
+      "https://www.instagram.com/casta_futbolera/"
+    ]
+  }
+  </script>
 </head>
 <body>
+
+  <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
   <!-- ==================== MENÚ SUPERIOR ==================== -->
   <header class="top-nav">
@@ -43,7 +112,7 @@
     </div>
   </header>
 
-  <!-- ==================== BARRA DE ACCESOS RÁPIDOS (ESTILO FALABELLA) ==================== -->
+  <!-- ==================== BARRA DE ACCESOS RÁPIDOS ==================== -->
   <div class="quick-access-bar">
     <div class="quick-access-container">
       <div class="qa-item" onclick="filterByEquipo('america')">
@@ -84,15 +153,15 @@
       <h2 class="main-title">Explora por equipo</h2>
       <div class="categories-grid">
         <div class="category-card" onclick="filterByEquipo('america')">
-          <img src="https://i.postimg.cc/Cx9Xn01L/Whats-App-Image-2026-10-30-at-10-43-16.jpg" alt="América de Cali" />
+          <img src="https://i.postimg.cc/Cx9Xn01L/Whats-App-Image-2026-10-30-at-10-43-16.jpg" alt="Camisetas del América de Cali" />
           <h3>América de Cali</h3>
         </div>
         <div class="category-card" onclick="filterByEquipo('nacional')">
-          <img src="https://i.postimg.cc/fyfkJZhR/7e482a49-d71b-4d64-9766-f21a5d4f8efa.jpg" alt="Atlético Nacional" />
+          <img src="https://i.postimg.cc/fyfkJZhR/7e482a49-d71b-4d64-9766-f21a5d4f8efa.jpg" alt="Camisetas del Atlético Nacional" />
           <h3>Atlético Nacional</h3>
         </div>
         <div class="category-card" onclick="filterByEquipo('millonarios')">
-          <img src="https://i.postimg.cc/RF6ynLcC/Whats-App-Image-2026-11-04-at-10-44-55.jpg" alt="Millonarios" />
+          <img src="https://i.postimg.cc/RF6ynLcC/Whats-App-Image-2026-11-04-at-10-44-55.jpg" alt="Camisetas de Millonarios" />
           <h3>Millonarios</h3>
         </div>
       </div>
@@ -106,7 +175,7 @@
       
       <div class="catalog-toolbar">
         <p id="resultsCount" class="results-count">Cargando productos...</p>
-        <select id="ordenFilter" class="input sort-select">
+        <select id="ordenFilter" class="input sort-select" aria-label="Ordenar productos">
           <option value="none">Más relevante</option>
           <option value="asc">Precio: menor a mayor</option>
           <option value="desc">Precio: mayor a menor</option>
@@ -117,8 +186,8 @@
     <div class="catalog-layout">
       <aside class="filters-sidebar">
         <h3>Filtros</h3>
-        <select id="tipoFilter" class="input"><option value="">Todos los tipos</option></select>
-        <select id="generoFilter" class="input"><option value="">Todos los géneros</option></select>
+        <select id="tipoFilter" class="input" aria-label="Filtrar por tipo"><option value="">Todos los tipos</option></select>
+        <select id="generoFilter" class="input" aria-label="Filtrar por género"><option value="">Todos los géneros</option></select>
         <label class="checkbox-label"><input type="checkbox" id="destacadosFilter" /> Solo destacados</label>
         <button id="clearFilters" class="link-btn">Limpiar filtros</button>
       </aside>
@@ -182,11 +251,14 @@
         <h2 class="footer-title">URBAR STORE</h2>
         <p>Camisetas retro de equipos colombianos. Calidad AAA.</p>
         
-        <!-- Medios de Pago (Robado de Falabella) -->
+        <!-- Medios de Pago -->
         <div class="payment-methods">
           <p style="margin-top: 15px; font-size: 0.8rem; color: #9ca3af;">Medios de pago:</p>
           <div class="payment-icons">
-            <span>💳</span> <span>🏦</span> <span>💵</span> <span>📱</span>
+            <span title="Tarjeta de Crédito">💳</span> 
+            <span title="Transferencia">🏦</span> 
+            <span title="Efectivo">💵</span> 
+            <span title="Nequi / Daviplata">📱</span>
           </div>
         </div>
       </div>
@@ -218,10 +290,10 @@
 
   <!-- ==================== CARRITO (DRAWER) ==================== -->
   <div id="cartOverlay" class="cart-overlay hidden"></div>
-  <aside id="cartDrawer" class="cart-drawer hidden">
+  <aside id="cartDrawer" class="cart-drawer hidden" role="dialog" aria-modal="true">
     <header class="cart-header">
       <h2 id="cartTitle">Tu carrito</h2>
-      <button id="closeCart" class="close-btn">×</button>
+      <button id="closeCart" class="close-btn" aria-label="Cerrar">×</button>
     </header>
 
     <div id="cartView" class="cart-view">

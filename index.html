@@ -4,76 +4,126 @@
   <meta charset="UTF-8" />
   <meta name="google-site-verification" content="2T6QfW7rfebdwu7hLj80UUCib_s5D6HuApVI69chHjA" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Camisetas Retro y Nuevas de Fútbol | América, Nacional, Millonarios</title>
+  <title>Camisetas Retro y Nuevas de Fútbol | Pasión Deportiva</title>
   <meta name="description" content="Compra camisetas retro, buzos y sudaderas de América de Cali, Atlético Nacional y Millonarios. Calidad AAA, envíos a toda Colombia." />
   <link rel="canonical" href="https://distribuidora-urbar.vercel.app/" />
-  <meta property="og:title" content="Camisetas Retro y Nuevas de Fútbol" />
-  <meta property="og:description" content="Calidad AAA y envíos a todo el país." />
-  <meta property="og:image" content="https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png" />
-  <meta property="og:url" content="https://distribuidora-urbar.vercel.app/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👕</text></svg>" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <a class="skip-link" href="#main">Saltar al contenido principal</a>
+  <!-- ==================== MENÚ SUPERIOR (ESTILO DECATHLON) ==================== -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <h1>⚡ Pasión Deportiva</h1>
+      </div>
+      
+      <div class="nav-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="searchInput" placeholder="Buscar camisetas, buzos, equipos..." />
+      </div>
 
-  <header class="header" role="banner">
-    <div class="header-banner" style="background-image: url('https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png');">
-      <div class="header-inner">
-        <div class="brand sr-only">
-          <h1>Camisetas de Fútbol Colombianas</h1>
-        </div>
-        <button id="cartBtn" class="cart-btn" aria-label="Abrir carrito">
-          🛒 Carrito <span id="cartCount" class="cart-count hidden">0</span>
-        </button>
+      <button id="cartBtn" class="nav-cart-btn" aria-label="Abrir carrito">
+        🛒 <span id="cartCount" class="cart-count hidden">0</span>
+      </button>
+    </div>
+    
+    <!-- Sub-menú -->
+    <div class="sub-nav">
+      <div class="sub-nav-container">
+        <a href="#">Inicio</a>
+        <a href="#">Camisetas</a>
+        <a href="#">Buzos</a>
+        <a href="#">Sudaderas</a>
+        <a href="#">Ofertas</a>
+        <a href="#">Envío Gratis</a>
       </div>
     </div>
   </header>
 
-  <main id="main" class="main" role="main">
-    <aside class="filters">
-      <input id="searchInput" type="search" placeholder="Buscar..." class="input" />
-      <div class="filters-grid">
-        <select id="equipoFilter" class="input"><option value="">Equipos</option></select>
-        <select id="tipoFilter" class="input"><option value="">Tipos</option></select>
-        <select id="generoFilter" class="input"><option value="">Géneros</option></select>
-        <select id="ordenFilter" class="input">
-          <option value="none">Sin orden</option>
+  <!-- ==================== BANNER ==================== -->
+  <section class="hero-banner" style="background-image: url('https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png');">
+  </section>
+
+  <main class="main-content">
+    
+    <!-- ==================== CATEGORÍAS DESTACADAS ==================== -->
+    <section class="categories-section">
+      <h2 class="main-title">Explora por equipo</h2>
+      <div class="categories-grid">
+        <div class="category-card" onclick="filterByEquipo('america')">
+          <img src="https://i.postimg.cc/Cx9Xn01L/Whats-App-Image-2026-10-30-at-10-43-16.jpg" alt="América de Cali" />
+          <h3>América de Cali</h3>
+        </div>
+        <div class="category-card" onclick="filterByEquipo('nacional')">
+          <img src="https://i.postimg.cc/fyfkJZhR/7e482a49-d71b-4d64-9766-f21a5d4f8efa.jpg" alt="Atlético Nacional" />
+          <h3>Atlético Nacional</h3>
+        </div>
+        <div class="category-card" onclick="filterByEquipo('millonarios')">
+          <img src="https://i.postimg.cc/RF6ynLcC/Whats-App-Image-2026-11-04-at-10-44-55.jpg" alt="Millonarios" />
+          <h3>Millonarios</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TÍTULO Y FILTROS ==================== -->
+    <div class="catalog-header">
+      <div>
+        <p class="breadcrumbs">Inicio > Catálogo</p>
+        <h2 class="catalog-title">Todas las camisetas</h2>
+      </div>
+      
+      <div class="catalog-toolbar">
+        <p id="resultsCount" class="results-count">Cargando productos...</p>
+        <select id="ordenFilter" class="input sort-select">
+          <option value="none">Más relevante</option>
           <option value="asc">Precio: menor a mayor</option>
           <option value="desc">Precio: mayor a menor</option>
         </select>
       </div>
-      <label class="checkbox-label"><input type="checkbox" id="destacadosFilter" /> Solo destacados</label>
-      <button id="clearFilters" class="link-btn">Limpiar filtros</button>
-    </aside>
+    </div>
 
-    <section class="products-section">
-      <h2 class="section-title">Catálogo de camisetas y buzos</h2>
-      <p id="resultsCount" class="results-count">Cargando...</p>
-      <div id="productsGrid" class="products-grid"></div>
-      <p id="emptyMessage" class="empty-message hidden">No hay productos que coincidan.</p>
-    </section>
+    <!-- ==================== ÁREA DE PRODUCTOS Y FILTROS LATERALES ==================== -->
+    <div class="catalog-layout">
+      
+      <!-- Barra lateral de filtros -->
+      <aside class="filters-sidebar">
+        <h3>Filtros</h3>
+        <select id="tipoFilter" class="input"><option value="">Todos los tipos</option></select>
+        <select id="generoFilter" class="input"><option value="">Todos los géneros</option></select>
+        <label class="checkbox-label"><input type="checkbox" id="destacadosFilter" /> Solo destacados</label>
+        <button id="clearFilters" class="link-btn">Limpiar filtros</button>
+      </aside>
+
+      <!-- Grilla de productos -->
+      <section class="products-section">
+        <div id="productsGrid" class="products-grid"></div>
+        <p id="emptyMessage" class="empty-message hidden">No hay productos que coincidan.</p>
+      </section>
+
+    </div>
   </main>
 
+  <!-- ==================== FOOTER ==================== -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-col">
-        <h2 class="footer-title">Tienda de Camisetas</h2>
+        <h2 class="footer-title">Pasión Deportiva</h2>
         <p>Camisetas retro de equipos colombianos. Calidad AAA.</p>
       </div>
       <div class="footer-col">
         <h2 class="footer-title">Contacto</h2>
         <ul class="footer-list">
-          <!-- AQUÍ ESTÁN TUS DATOS REALES -->
           <li>📱 WhatsApp: <a href="https://wa.me/573005177418" target="_blank">+57 300 517 7418</a></li>
           <li>✉️ Email: <a href="mailto:codesbarrera@gmail.com">codesbarrera@gmail.com</a></li>
         </ul>
       </div>
     </div>
-    <p class="footer-copy">© <span id="footerYear"></span> Tienda de Camisetas.</p>
+    <p class="footer-copy">© <span id="footerYear"></span> Pasión Deportiva.</p>
   </footer>
 
+  <!-- ==================== CARRITO (DRAWER) ==================== -->
   <div id="cartOverlay" class="cart-overlay hidden"></div>
   <aside id="cartDrawer" class="cart-drawer hidden">
     <header class="cart-header">
@@ -107,12 +157,10 @@
 
     <div id="successView" class="success-view hidden">
       <div class="success-icon">✅</div>
-      <p>Tu pedido fue registrado. Te llegará un recibo al correo en unos segundos.</p>
-      
+      <p>Tu pedido fue registrado. Te llegará un recibo al correo.</p>
       <a id="whatsappReceiptBtn" href="#" target="_blank" class="btn-success" style="text-align: center; text-decoration: none; display: block; margin-bottom: 10px; background-color: #25D366;">
         📲 Recibir recibo por WhatsApp
       </a>
-      
       <button id="continueShopping" class="btn-primary">Seguir comprando</button>
     </div>
   </aside>

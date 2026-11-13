@@ -15,29 +15,19 @@ function toast(msg, ms = 2500) {
   document.body.appendChild(el); setTimeout(() => el.remove(), ms);
 }
 
-/* ==========================================
-   FUNCIÓN PARA COPIAR AL PORTAPAPELES
-   ========================================== */
 function copyText(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
     const originalText = btn.textContent;
     btn.textContent = "¡Copiado!";
     btn.style.background = "#22c55e"; btn.style.color = "#fff";
     setTimeout(() => { btn.textContent = originalText; btn.style.background = "#e5e7eb"; btn.style.color = "#111827"; }, 2000);
-  }).catch(err => {
-    alert("No se pudo copiar: " + text);
-  });
+  }).catch(err => alert("No se pudo copiar: " + text));
 }
 
-/* ==========================================
-   PERSISTENCIA DEL CARRITO (localStorage)
-   ========================================== */
 function saveCart() { localStorage.setItem("urbar_cart", JSON.stringify(state.cart)); }
 function loadCart() {
-  try {
-    const saved = localStorage.getItem("urbar_cart");
-    if (saved) state.cart = JSON.parse(saved);
-  } catch (e) { console.error("Error al cargar el carrito", e); }
+  try { const saved = localStorage.getItem("urbar_cart"); if (saved) state.cart = JSON.parse(saved); } 
+  catch (e) { console.error("Error al cargar el carrito", e); }
 }
 
 async function getJSON(url) {
@@ -55,14 +45,10 @@ async function postJSON(body) {
 async function loadProducts() {
   const grid = $("#productsGrid");
   grid.innerHTML = Array(8).fill('<div class="skeleton-card"></div>').join('');
-  
   try {
     state.products = await getJSON(`${API_URL}?action=getProducts`);
     buildFilterOptions(); renderProducts(); updateCartCount(); updateProductStructuredData(state.products);
-  } catch (err) { 
-    $("#resultsCount").textContent = "Error al cargar productos"; 
-    grid.innerHTML = '';
-  }
+  } catch (err) { $("#resultsCount").textContent = "Error al cargar productos"; grid.innerHTML = ''; }
 }
 
 function buildFilterOptions() {
@@ -72,8 +58,7 @@ function buildFilterOptions() {
     select.innerHTML = `<option value="">${label}</option>`;
     values.forEach((v) => { select.innerHTML += `<option value="${v}">${v}</option>`; });
   };
-  fill($("#tipoFilter"), tipos, "Todos los tipos"); 
-  fill($("#generoFilter"), generos, "Todos los géneros");
+  fill($("#tipoFilter"), tipos, "Todos los tipos"); fill($("#generoFilter"), generos, "Todos los géneros");
 }
 
 function filterByEquipo(equipo) {
@@ -103,7 +88,6 @@ function renderProducts() {
   $("#resultsCount").textContent = `${list.length} producto(s) encontrados`;
   $("#emptyMessage").classList.toggle("hidden", list.length > 0);
   grid.innerHTML = "";
-  
   list.forEach((p, index) => {
     const card = createProductCard(p);
     card.style.animationDelay = `${index * 50}ms`;
@@ -315,12 +299,13 @@ async function submitOrder(e) {
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
     $("#successTotal").textContent = formatCOP(totalCalculado);
 
+    // SI WOMPI DEVUELVE EL LINK, LO USA. SI NO, USA EL LINK GENÉRICO QUE ME DISTE.
     if (response.wompiLink) {
       $("#wompiPayBtn").href = response.wompiLink;
-      $("#wompiPayBtn").style.display = "block";
     } else {
-      $("#wompiPayBtn").style.display = "none";
+      $("#wompiPayBtn").href = "https://checkout.wompi.co/l/VPOS_kTvnBL"; // Link de respaldo
     }
+    $("#wompiPayBtn").style.display = "block";
 
     state.cart = []; saveCart(); updateCartCount(); renderCart(); showSuccessView();
     setTimeout(() => loadProducts(), 1500);

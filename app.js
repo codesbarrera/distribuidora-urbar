@@ -22,13 +22,8 @@ function copyText(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
     const originalText = btn.textContent;
     btn.textContent = "¡Copiado!";
-    btn.style.background = "#22c55e";
-    btn.style.color = "#fff";
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.background = "#e5e7eb";
-      btn.style.color = "#111827";
-    }, 2000);
+    btn.style.background = "#22c55e"; btn.style.color = "#fff";
+    setTimeout(() => { btn.textContent = originalText; btn.style.background = "#e5e7eb"; btn.style.color = "#111827"; }, 2000);
   }).catch(err => {
     alert("No se pudo copiar: " + text);
   });
@@ -191,11 +186,9 @@ function openProductDetail(id) {
 
   const addBtn = $("#detailAddBtn");
   if (product.stock <= 0) {
-    addBtn.disabled = true;
-    addBtn.textContent = "Agotado";
+    addBtn.disabled = true; addBtn.textContent = "Agotado";
   } else {
-    addBtn.disabled = false;
-    addBtn.textContent = "Agregar al carrito 🛒";
+    addBtn.disabled = false; addBtn.textContent = "Agregar al carrito 🛒";
     const newBtn = addBtn.cloneNode(true);
     addBtn.parentNode.replaceChild(newBtn, addBtn);
     newBtn.addEventListener('click', () => addToCart(product, selectedSize));
@@ -282,8 +275,6 @@ function openCart() { $("#cartOverlay").classList.remove("hidden"); $("#cartDraw
 function closeCart() { $("#cartOverlay").classList.add("hidden"); $("#cartDrawer").classList.add("hidden"); showCartView(); }
 function showCartView() { $("#cartView").classList.remove("hidden"); $("#checkoutView").classList.add("hidden"); $("#successView").classList.add("hidden"); }
 function showCheckoutView() { $("#cartView").classList.add("hidden"); $("#checkoutView").classList.remove("hidden"); $("#successView").classList.add("hidden"); $("#checkoutTotal").textContent = formatCOP(getCartTotal()); }
-
-// ELIMINAMOS LA ACTUALIZACIÓN DEL TOTAL DE AQUÍ
 function showSuccessView() { 
   $("#cartView").classList.add("hidden"); 
   $("#checkoutView").classList.add("hidden"); 
@@ -302,9 +293,7 @@ async function submitOrder(e) {
     errorEl.textContent = "Completa nombre, teléfono y dirección."; errorEl.classList.remove("hidden"); return;
   }
 
-  // 1. CALCULAMOS EL TOTAL ANTES DE VACIAR EL CARRITO
   const totalCalculado = getCartTotal();
-
   const order = {
     cliente, email, telefono, direccion, ciudad,
     items: state.cart.map((i) => ({ id: i.product.id, nombre: i.product.nombre, talla: i.talla, cantidad: i.cantidad, precio: i.product.precio })),
@@ -314,24 +303,25 @@ async function submitOrder(e) {
   const btn = $("#submitOrder"); btn.disabled = true; btn.textContent = "Enviando...";
 
   try {
-    await postJSON({ action: "addOrder", order });
+    const response = await postJSON({ action: "addOrder", order });
     try { await postJSON({ action: "updateStock", items: state.cart.map((i) => ({ id: i.product.id, cantidad: i.cantidad })) }); } catch (err) {}
 
     const phoneWA = '573005177418'; 
-    let textWA = `¡Hola *URBAR STORE*! Aquí está el comprobante de mi pedido:\n\n`;
-    textWA += `*Cliente:* ${cliente}\n`;
-    textWA += `*Dirección:* ${direccion}, ${ciudad}\n\n`;
-    textWA += `*Productos:*\n`;
+    let textWA = `¡Hola *URBAR STORE*! Aquí está el recibo de mi pedido:\n\n`;
+    textWA += `*Cliente:* ${cliente}\n*Dirección:* ${direccion}, ${ciudad}\n\n*Productos:*\n`;
     state.cart.forEach(i => { textWA += `👕 ${i.cantidad}x ${i.product.nombre} (Talla: ${i.talla})\n`; });
-    textWA += `\n*Total pagado:* ${formatCOP(totalCalculado)}\n\n`;
-    textWA += `Adjunto mi comprobante de pago. ⚽`;
+    textWA += `\n*Total:* ${formatCOP(totalCalculado)}\n\nAdjunto mi comprobante. ⚽`;
 
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
-
-    // 2. ACTUALIZAMOS EL TEXTO EN LA PANTALLA CON EL TOTAL YA CALCULADO
     $("#successTotal").textContent = formatCOP(totalCalculado);
 
-    // 3. AHORA SÍ, VACIAMOS EL CARRITO
+    if (response.wompiLink) {
+      $("#wompiPayBtn").href = response.wompiLink;
+      $("#wompiPayBtn").style.display = "block";
+    } else {
+      $("#wompiPayBtn").style.display = "none";
+    }
+
     state.cart = []; saveCart(); updateCartCount(); renderCart(); showSuccessView();
     setTimeout(() => loadProducts(), 1500);
   } catch (err) {
@@ -391,9 +381,7 @@ function bindEvents() {
 
 function updateProductStructuredData(products) {
   const id = "product-list-jsonld"; let script = document.getElementById(id);
-  if (!script) {
-    script = document.createElement("script"); script.id = id; script.type = "application/ld+json"; document.head.appendChild(script);
-  }
+  if (!script) { script = document.createElement("script"); script.id = id; script.type = "application/ld+json"; document.head.appendChild(script); }
   const data = {
     "@context": "https://schema.org", "@type": "ItemList",
     "itemListElement": products.map((p, i) => ({

@@ -286,7 +286,6 @@ function showSuccessView() {
   $("#cartView").classList.add("hidden"); 
   $("#checkoutView").classList.add("hidden"); 
   $("#successView").classList.remove("hidden"); 
-  // Actualizamos el total en la pantalla de éxito
   $("#successTotal").textContent = formatCOP(getCartTotal());
 }
 
@@ -314,11 +313,15 @@ async function submitOrder(e) {
     await postJSON({ action: "addOrder", order });
     try { await postJSON({ action: "updateStock", items: state.cart.map((i) => ({ id: i.product.id, cantidad: i.cantidad })) }); } catch (err) {}
 
-    const cleanPhone = telefono.replace(/\D/g, ''); 
-    const phoneWA = cleanPhone.length === 10 ? '57' + cleanPhone : cleanPhone; 
-    let textWA = `¡Hola ${cliente}! Aquí está el recibo de tu pedido en *URBAR STORE*:\n\n`;
+    // EL MENSAJE DE WHATSAPP LLEGARÁ A TU NÚMERO DE PEDIDOS (3005177418)
+    const phoneWA = '573005177418'; 
+    let textWA = `¡Hola *URBAR STORE*! Aquí está el comprobante de mi pedido:\n\n`;
+    textWA += `*Cliente:* ${cliente}\n`;
+    textWA += `*Dirección:* ${direccion}, ${ciudad}\n\n`;
+    textWA += `*Productos:*\n`;
     state.cart.forEach(i => { textWA += `👕 ${i.cantidad}x ${i.product.nombre} (Talla: ${i.talla})\n`; });
-    textWA += `\n*Total:* ${formatCOP(order.total)}\n*Dirección:* ${direccion}, ${ciudad}\n\n¡Adjunto mi comprobante de pago! ⚽`;
+    textWA += `\n*Total pagado:* ${formatCOP(order.total)}\n\n`;
+    textWA += `Adjunto mi comprobante de pago. ⚽`;
 
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
 

@@ -30,6 +30,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .sub-nav a:hover { color: #22c55e; }
 .sub-nav a.active { color: #22c55e; border-bottom-color: #22c55e; }
 
+/* ========== BARRA DE ACCESOS RÁPIDOS ========== */
+.quick-access-bar { background: #111827; border-bottom: 1px solid #1f2937; padding: 15px 0; }
+.quick-access-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-around; padding: 0 16px; overflow-x: auto; }
+.qa-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; }
+.qa-item:hover { transform: translateY(-3px); }
+.qa-icon { width: 50px; height: 50px; background: #1f2937; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 1px solid #374151; }
+.qa-item:hover .qa-icon { border-color: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.3); }
+.qa-item span { color: #d1d5db; font-size: 0.85rem; font-weight: 500; }
+
 /* ========== BANNER ========== */
 .hero-banner { width: 100%; height: 250px; background-size: cover; background-position: center; margin-bottom: 30px; }
 @media (max-width: 768px) { .hero-banner { height: 150px; } }
@@ -69,8 +78,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(34, 197, 94, 0.2); }
 .product-image-wrap { position: relative; aspect-ratio: 1 / 1; background: #f3f4f6; overflow: hidden; }
-.product-image-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-.product-card:hover .product-image-wrap img { transform: scale(1.08); }
+.product-image-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease, filter 0.3s ease; }
+.product-card:hover .product-image-wrap img { transform: scale(1.08); filter: brightness(92%); } /* Efecto robado de Falabella */
+
 .badge { position: absolute; top: 8px; font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; z-index: 2; }
 .badge-destacado { left: 8px; background: #facc15; color: #111827; }
 .badge-agotado { right: 8px; background: #dc2626; color: #fff; }
@@ -92,19 +102,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @keyframes shimmer { 100% { transform: translateX(100%); } }
 
 /* ========== VISTA DE DETALLE ========== */
-.product-detail-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 30px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-@media (min-width: 900px) {
-  .product-detail-layout { grid-template-columns: 200px 1fr 350px; }
-}
-
+.product-detail-layout { display: grid; grid-template-columns: 1fr; gap: 30px; background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+@media (min-width: 900px) { .product-detail-layout { grid-template-columns: 200px 1fr 350px; } }
 .detail-suggestions { display: flex; flex-direction: column; gap: 12px; }
 .suggestions-title { font-size: 0.9rem; color: #6b7280; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
 .suggestions-list { display: flex; flex-direction: column; gap: 12px; }
@@ -113,10 +112,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .suggestion-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
 .suggestion-item-info p { font-size: 0.8rem; font-weight: 600; color: #111827; line-height: 1.2; margin-bottom: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .suggestion-item-info span { font-size: 0.85rem; color: #22c55e; font-weight: 700; }
-
 .detail-image-container { background: #f9fafb; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; }
 .detail-image-container img { max-width: 100%; max-height: 500px; object-fit: contain; }
-
 .detail-info { display: flex; flex-direction: column; }
 .detail-meta { font-size: 0.85rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 .detail-title { font-size: 1.8rem; font-weight: 800; color: #111827; line-height: 1.2; margin-bottom: 12px; }
@@ -160,23 +157,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #22c55e; color: #fff; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; z-index: 100; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
 
-/* ========== FOOTER (3 COLUMNAS) ========== */
+/* ========== FOOTER ========== */
 .site-footer { background: #111827; color: #e5e7eb; margin-top: 48px; padding: 40px 16px 20px; border-top: 1px solid #1f2937; }
 .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 30px; }
-
-/* Ajuste para 3 columnas en pantallas grandes */
 @media (min-width: 768px) { .footer-inner { grid-template-columns: 2fr 1.5fr 1fr; } }
-
 .footer-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
 .footer-col p { font-size: 0.9rem; color: #d1d5db; }
 .footer-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; }
 .footer-list a { color: #22c55e; text-decoration: none; transition: color 0.2s; }
 .footer-list a:hover { color: #4ade80; text-decoration: underline; }
 
-/* Estilos de Redes Sociales */
+/* Medios de pago */
+.payment-icons { display: flex; gap: 10px; margin-top: 8px; font-size: 1.5rem; }
+.payment-icons span { opacity: 0.7; transition: opacity 0.2s; cursor: pointer; }
+.payment-icons span:hover { opacity: 1; }
+
+/* Redes Sociales */
 .social-links { display: flex; flex-direction: column; gap: 12px; }
 .social-links a { display: inline-flex; align-items: center; gap: 8px; color: #d1d5db; text-decoration: none; font-size: 0.9rem; transition: color 0.3s, transform 0.2s; }
 .social-links a:hover { color: #22c55e; transform: translateX(3px); }
 .social-links svg { width: 20px; height: 20px; }
-
 .footer-copy { max-width: 1200px; margin: 30px auto 0; padding-top: 16px; border-top: 1px solid #374151; font-size: 0.8rem; color: #9ca3af; text-align: center; }

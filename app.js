@@ -278,6 +278,15 @@ async function submitOrder(e) {
   }
 
   const totalCalculado = getCartTotal();
+  
+  // Preparamos los productos para Tag Manager y Meta
+  const cartParaAnalytics = state.cart.map((i) => ({
+    item_id: i.product.id,
+    item_name: i.product.nombre,
+    price: i.product.precio,
+    quantity: i.cantidad
+  }));
+
   const order = {
     cliente, email, telefono, direccion, ciudad,
     items: state.cart.map((i) => ({ id: i.product.id, nombre: i.product.nombre, talla: i.talla, cantidad: i.cantidad, precio: i.product.precio })),
@@ -290,6 +299,30 @@ async function submitOrder(e) {
     const response = await postJSON({ action: "addOrder", order });
     try { await postJSON({ action: "updateStock", items: state.cart.map((i) => ({ id: i.product.id, cantidad: i.cantidad })) }); } catch (err) {}
 
+    // ==========================================
+    // RASTREO DE VENTAS PARA GOOGLE TAG MANAGER
+    // ==========================================
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'purchase',
+      'ecommerce': {
+        'transaction_id': 'ORDEN-' + new Date().getTime(),
+        'value': totalCalculado,
+        'currency': 'COP',
+        'items': cartParaAnalytics
+      }
+    });
+
+    // RASTREO PARA META PIXEL
+    if (typeof fbq === 'function') {
+      fbq('track', 'Purchase', {
+        value: totalCalculado,
+        currency: 'COP',
+        contents: cartParaAnalytics,
+        content_type: 'product'
+      });
+    }
+
     const phoneWA = '573005177418'; 
     let textWA = `¡Hola *URBAR STORE*! Aquí está el recibo de mi pedido:\n\n`;
     textWA += `*Cliente:* ${cliente}\n*Dirección:* ${direccion}, ${ciudad}\n\n*Productos:*\n`;
@@ -299,7 +332,6 @@ async function submitOrder(e) {
     $("#whatsappReceiptBtn").href = `https://wa.me/${phoneWA}?text=${encodeURIComponent(textWA)}`;
     $("#successTotal").textContent = formatCOP(totalCalculado);
 
-    // SI WOMPI FALLA, TE AVISA EN LUGAR DE MANDARTE AL LINK DE $0
     if (response.wompiLink) {
       $("#wompiPayBtn").href = response.wompiLink;
       $("#wompiPayBtn").style.display = "block";

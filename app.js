@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbyF2tOw3YZT5l_ji2fvL-E0JPbZllEq43eV5oTkrYz2pRh8eiimETCgnkZ98wBi4u0/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbw13XHijvij69hcrHdBA2oJ800nqMr3dJNzSDHSxPiE0xfHH72sVTO4mS3XNTRqMlQ/exec";
 
 const state = {
   products: [],
@@ -48,6 +48,13 @@ async function loadProducts() {
   try {
     state.products = await getJSON(`${API_URL}?action=getProducts`);
     buildFilterOptions(); renderProducts(); updateCartCount(); updateProductStructuredData(state.products);
+    
+    // Si el usuario entra directo a una URL de producto, lo abrimos
+    const path = window.location.pathname;
+    if (path.startsWith('/producto/')) {
+      const id = path.split('/')[2];
+      if (id) openProductDetail(Number(id), false); // false para que no vuelva a cambiar la URL
+    }
   } catch (err) { $("#resultsCount").textContent = "Error al cargar productos"; grid.innerHTML = ''; }
 }
 
@@ -101,12 +108,12 @@ function createProductCard(product) {
 
   card.addEventListener('click', (e) => {
     if(e.target.classList.contains('talla-btn') || e.target.classList.contains('add-btn')) return;
-    openProductDetail(product.id);
+    openProductDetail(product.id, true);
   });
 
   card.innerHTML = `
     <div class="product-image-wrap">
-      <img src="${product.imagen}" alt="${product.nombre}" loading="lazy" />
+      <img src="${product.imagen}" alt="${product.nombre} - ${product.equipo}" loading="lazy" />
       ${product.destacado ? '<span class="badge badge-destacado">⭐</span>' : ""}
       ${sinStock ? '<span class="badge badge-agotado">Agotado</span>' : ""}
     </div>
@@ -133,7 +140,48 @@ function createProductCard(product) {
   return card;
 }
 
-function openProductDetail(id) {
+// ACTUALIZA EL TÍTULO Y DESCRIPCIÓN PARA GOOGLE
+function updateSEO(product = null) {
+  const titleEl = document.querySelector("title");
+  const descEl = document.querySelector('meta[name="description"]');
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  const ogImage = document.querySelector('meta[property="og:image"]');
+  const canonical = document.querySelector('link[rel="canonical"]');
+
+  if (product) {
+    const pageTitle = `${product.nombre} | URbar Store`;
+    const pageDesc = `Compra ${product.nombre} del ${product.equipo}. Calidad ${product.calidad}, tallas ${product.tallas.join(', ')}. Envíos a toda Colombia.`;
+    const pageUrl = `https://distribuidora-urbar.vercel.app/producto/${product.id}`;
+
+    if (titleEl) titleEl.textContent = pageTitle;
+    if (descEl) descEl.setAttribute("content", pageDesc);
+    if (ogTitle) ogTitle.setAttribute("content", pageTitle);
+    if (ogDesc) ogDesc.setAttribute("content", pageDesc);
+    if (ogImage) ogImage.setAttribute("content", product.imagen);
+    if (canonical) canonical.setAttribute("href", pageUrl);
+    
+    // Actualizamos la URL en el navegador sin recargar
+    window.history.pushState({ productId: product.id }, '', `/producto/${product.id}`);
+  } else {
+    // Restaurar valores por defecto (Catálogo)
+    const defaultTitle = `Camisetas Retro y Nuevas de Fútbol | URbar Store`;
+    const defaultDesc = `Compra camisetas retro, buzos y sudaderas de América de Cali, Atlético Nacional y Millonarios. Calidad AAA, envíos a toda Colombia.`;
+    const defaultImage = "https://i.postimg.cc/B6NzhDjp/Pasion-deportiva-en-verde-neon.png";
+    const defaultUrl = "https://distribuidora-urbar.vercel.app/";
+
+    if (titleEl) titleEl.textContent = defaultTitle;
+    if (descEl) descEl.setAttribute("content", defaultDesc);
+    if (ogTitle) ogTitle.setAttribute("content", defaultTitle);
+    if (ogDesc) ogDesc.setAttribute("content", defaultDesc);
+    if (ogImage) ogImage.setAttribute("content", defaultImage);
+    if (canonical) canonical.setAttribute("href", defaultUrl);
+
+    window.history.pushState({}, '', '/');
+  }
+}
+
+function openProductDetail(id, updateUrl = true) {
   const product = state.products.find(p => p.id === id);
   if (!product) return;
   state.currentProduct = product;
@@ -151,6 +199,9 @@ function openProductDetail(id) {
   $("#detailQuality").textContent = product.calidad;
   $("#detailGender").textContent = product.genero;
   $("#detailStock").textContent = product.stock > 0 ? `${product.stock} disponibles` : "Agotado";
+
+  // Solo actualizamos la URL si venimos de un clic (no si recargamos la página)
+  if (updateUrl) updateSEO(product);
 
   const sizesWrap = $("#detailSizes");
   sizesWrap.innerHTML = "";
@@ -192,7 +243,7 @@ function openProductDetail(id) {
         <span>${formatCOP(s.precio)}</span>
       </div>
     `;
-    div.addEventListener('click', () => openProductDetail(s.id));
+    div.addEventListener('click', () => openProductDetail(s.id, true));
     suggestionsWrap.appendChild(div);
   });
 }
@@ -202,6 +253,7 @@ function showCatalog(e) {
   $("#productDetailView").classList.add("hidden");
   $("#catalogView").classList.remove("hidden");
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateSEO(); // Restaura el título de la tienda
 }
 
 function addToCart(product, talla, cantidad = 1) {
@@ -298,9 +350,6 @@ async function submitOrder(e) {
     const response = await postJSON({ action: "addOrder", order });
     try { await postJSON({ action: "updateStock", items: state.cart.map((i) => ({ id: i.product.id, cantidad: i.cantidad })) }); } catch (err) {}
 
-    // ==========================================
-    // RASTREO DE VENTAS PARA GOOGLE TAG MANAGER
-    // ==========================================
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'purchase',
@@ -312,7 +361,6 @@ async function submitOrder(e) {
       }
     });
 
-    // RASTREO PARA META PIXEL
     if (typeof fbq === 'function') {
       fbq('track', 'Purchase', {
         value: totalCalculado,
@@ -393,6 +441,17 @@ function bindEvents() {
       renderProducts();
       document.querySelector('.catalog-header').scrollIntoView({ behavior: 'smooth' });
     });
+  });
+  
+  // Manejar el botón "Atrás" del navegador
+  window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.productId) {
+      openProductDetail(e.state.productId, false);
+    } else {
+      $("#productDetailView").classList.add("hidden");
+      $("#catalogView").classList.remove("hidden");
+      updateSEO();
+    }
   });
 }
 

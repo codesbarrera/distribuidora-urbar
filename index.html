@@ -169,7 +169,7 @@
   </main>
 
   <!-- ==================== VISTA 2: DETALLE DEL PRODUCTO ==================== -->
-  <div id="productDetailView" class="main-content hidden">
+  <main id="productDetailView" class="main-content hidden">
     <div class="breadcrumbs" style="margin-bottom: 20px;">
       <a href="#" onclick="showCatalog(event)" style="color: #22c55e; text-decoration: none;">Inicio</a> > Catálogo > <span id="detailBreadcrumb">Producto</span>
     </div>
@@ -190,6 +190,8 @@
         <h1 class="detail-title" id="detailTitle">Nombre del Producto</h1>
         <p class="detail-price" id="detailPrice">$0</p>
         
+        <p id="detailDesc" style="color: #4b5563; font-size: 0.95rem; margin-bottom: 16px; line-height: 1.6; font-style: italic;"></p>
+
         <hr class="divider" />
         
         <div class="detail-options">
@@ -208,19 +210,18 @@
         </button>
       </div>
     </div>
-  </div>
+  </main>
 
   <!-- ==================== BLOQUE DE TEXTO SEO ==================== -->
   <section class="seo-text-section" style="max-width: 1200px; margin: 40px auto; padding: 24px; background: #1f2937; border-radius: 12px; color: #d1d5db; font-size: 0.95rem; line-height: 1.7; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-    <h2 style="color: #fff; font-size: 1.3rem; margin-bottom: 15px; font-weight: 800;">Camisetas Retro de Fútbol Colombiano: Pasión que se Hereda</h2>
-    <p style="margin-bottom: 15px;">En <strong style="color: #fff;">URbar Store</strong> vivimos el fútbol como tú. Por eso, traemos la mejor selección de <strong style="color: #22c55e;">camisetas retro de fútbol colombiano</strong>, para que lleves la historia de tu equipo en el pecho. Sabemos que una camiseta es más que una prenda; es un recuerdo, una final, un gol en el último minuto.</p>
+    <h2 style="color: #fff; font-size: 1.3rem; margin-bottom: 15px; font-weight: 800;">Camisetas Retro y Actuales de Fútbol Colombiano</h2>
+    <p style="margin-bottom: 15px;">En <strong style="color: #fff;">URbar Store</strong> vivimos el fútbol como tú. Si estás en Bogotá o en cualquier parte de Colombia y buscas la mítica <strong style="color: #22c55e;">Camiseta Millonarios Blanca</strong> o la clásica <strong style="color: #fff;">Camiseta Millonarios Leona</strong>, has llegado al lugar correcto.</p>
     
-    <h3 style="color: #fff; font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px; font-weight: 700;">Camisetas Retro del América de Cali, Nacional y Millonarios</h3>
-    <p style="margin-bottom: 15px;">Encuentra las míticas camisetas del <strong style="color: #fff;">América de Cali</strong>, del <strong style="color: #fff;">Atlético Nacional</strong> y de <strong style="color: #fff;">Millonarios</strong>. Revive la época dorada del fútbol colombiano con nuestras <strong style="color: #22c55e;">camisetas vintage</strong> de los años 80, 90 y 2000. Cada una de nuestras prendas es seleccionada pensando en la calidad y en la fidelidad de los diseños que marcaron época.</p>
+    <h3 style="color: #fff; font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px; font-weight: 700;">Camisetas del Embajador y los equipos colombianos</h3>
+    <p style="margin-bottom: 15px;">Tenemos desde la inolvidable <strong style="color: #fff;">Camiseta Millonarios 80 Años</strong> hasta las nuevas <strong style="color: #fff;">Camiseta Millonarios 2025</strong> y 2026. También contamos con las clásicas camisetas del Atlético Nacional y América de Cali. Revive la época dorada con nuestras <strong style="color: #22c55e;">camisetas vintage</strong> de calidad AAA, diseñadas para durar.</p>
     
-    <h3 style="color: #fff; font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px; font-weight: 700;">Calidad AAA y Envíos a Toda Colombia</h3>
-    <p style="margin-bottom: 15px;">Nuestras <strong style="color: #fff;">camisetas retro de fútbol</strong> son de <strong style="color: #22c55e;">Calidad AAA</strong>, lo que garantiza durabilidad y un diseño que no se destiñe con el tiempo. Ofrecemos <strong style="color: #fff;">tallas desde la S hasta la XXL</strong> para que encuentres tu ajuste perfecto. Además, realizamos <strong style="color: #fff;">envíos a toda Colombia</strong>, para que la pasión por tu equipo te encuentre donde estés.</p>
-    <p>Si buscas una <strong style="color: #fff;">camiseta retro original</strong> o una <strong style="color: #fff;">réplica de alta calidad</strong>, en URbar Store tenemos la que necesitas. Explora nuestro catálogo y encuentra esa camiseta que te transporta a la infancia.</p>
+    <h3 style="color: #fff; font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px; font-weight: 700;">Envíos a Toda Colombia</h3>
+    <p style="margin-bottom: 15px;">Ofrecemos <strong style="color: #fff;">tallas desde la S hasta la XXL</strong> para que encuentres tu ajuste perfecto. Realizamos <strong style="color: #fff;">envíos a toda Colombia</strong>, con despachos rápidos desde Bogotá para que la pasión por tu equipo te encuentre donde estés. Explora nuestro catálogo y encuentra esa camiseta que te transporta a la infancia.</p>
   </section>
 
   <!-- ==================== FOOTER ==================== -->
@@ -229,15 +230,13 @@
       <div class="footer-col">
         <h2 class="footer-title">URBAR STORE</h2>
         <p>Camisetas retro de equipos colombianos. Calidad AAA.</p>
-        <div class="payment-methods">
-          <p style="margin-top: 15px; font-size: 0.8rem; color: #9ca3af;">Medios de pago:</p>
-          <div class="payment-icons">
-            <span title="Tarjeta de Crédito">💳</span> 
-            <span title="Transferencia">🏦</span> 
-            <span title="Efectivo">💵</span> 
-            <span title="Nequi / Daviplata">📱</span>
-          </div>
-        </div>
+        
+        <!-- NUEVA SECCIÓN LEGAL (Requerida por Google Merchant) -->
+        <h2 class="footer-title" style="margin-top: 20px;">Información Legal</h2>
+        <ul class="footer-list">
+          <li><a href="/politicas.html" target="_blank">Políticas de Devolución</a></li>
+          <li><a href="/politicas.html" target="_blank">Términos y Privacidad</a></li>
+        </ul>
       </div>
       
       <div class="footer-col">
